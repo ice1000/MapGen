@@ -29,9 +29,7 @@ fun main(vararg args: String) {
 		map {
 			Pair(x, y).neighbors.forEach { p ->
 				set(p.first, p.second, v + rand(100) - 50)
-				p.neighbors.forEach { (x, y) ->
-					set(x, y, v + rand(100) - 50)
-				}
+				p.neighbors.forEach { (x, y) -> set(x, y, v + rand(100) - 50) }
 			}
 			set(x, y, v)
 		}
@@ -39,9 +37,7 @@ fun main(vararg args: String) {
 	(0..100).forEach { map[rand(48) + 1, rand(48) + 1] = rand(500) + 300 }
 
 	map.forEach {
-		it.forEach {
-			printf("%5d", it)
-		}
+		it.forEach { printf("%5d", it) }
 		println()
 	}
 	image(50, 50) {
