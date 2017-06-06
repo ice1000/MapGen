@@ -3,6 +3,7 @@
 
 package org.ice1000.mapgen
 
+import java.awt.Color
 import java.awt.Graphics
 import java.awt.image.BufferedImage
 import java.io.File
@@ -21,6 +22,7 @@ import javax.swing.JPanel
 private val random = Random(System.currentTimeMillis())
 
 fun rand() = random.nextInt()
+fun rand(i: Int) = random.nextInt(i)
 
 fun fileImage(name: String) = ImageIO.read(File(name))!!
 
@@ -37,6 +39,9 @@ inline fun image(width: Int, height: Int, block: BufferedImage.() -> Unit) {
 }
 
 fun BufferedImage.color(p: Pair<Int, Int>, i: Int) = color(p.first, p.second, i)
+
+val BLUE = Color.BLUE.rgb
+val GREEN = Color.GREEN.rgb
 
 val BufferedImage.color: BufferedImage.(Int, Int, Int) -> Unit
 	inline get() = BufferedImage::setRGB
