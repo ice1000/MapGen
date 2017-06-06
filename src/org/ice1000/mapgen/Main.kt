@@ -6,7 +6,10 @@ package org.ice1000.mapgen
  * @author ice1000
  */
 
+typealias Map = List<List<Int>>
+
 fun main(vararg args: String) {
-	image("out.png", 50, 50) {
+	image(50, 50) {
+		write("out.png")
 	}
 }

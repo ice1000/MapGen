@@ -3,16 +3,24 @@
 
 package org.ice1000.mapgen
 
+import java.awt.Graphics
 import java.awt.image.BufferedImage
 import java.io.File
 import java.net.URL
+import java.util.*
 import javax.imageio.ImageIO
+import javax.swing.JFrame
+import javax.swing.JPanel
 
 /**
  * Created by ice1000 on 17-6-6.
  *
  * @author ice1000
  */
+
+private val random = Random(System.currentTimeMillis())
+
+fun rand() = random.nextInt()
 
 fun fileImage(name: String) = ImageIO.read(File(name))!!
 
@@ -24,11 +32,34 @@ inline fun image(name: String, width: Int, height: Int, block: BufferedImage.() 
 	})
 }
 
+inline fun image(width: Int, height: Int, block: BufferedImage.() -> Unit) {
+	BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB).run(block)
+}
+
+fun BufferedImage.color(p: Pair<Int, Int>, i: Int) = color(p.first, p.second, i)
+
 val BufferedImage.color: BufferedImage.(Int, Int, Int) -> Unit
 	inline get() = BufferedImage::setRGB
+
+fun BufferedImage.colorOf(p: Pair<Int, Int>): Int = colorOf(p.first, p.second)
 
 val BufferedImage.colorOf: BufferedImage.(Int, Int) -> Int
 	inline get() = BufferedImage::getRGB
 
+fun BufferedImage.show() {
+	JFrame("show").let {
+		it.setSize(width, height)
+		it.defaultCloseOperation = 3
+		it.add(object : JPanel() {
+			override fun paintComponent(p0: Graphics?) {
+				p0?.drawImage(this@show, 0, 0, it)
+				super.paintComponent(p0)
+			}
+		})
+		it.isVisible = true
+	}
+}
 
-
+fun BufferedImage.write(name: String) {
+	ImageIO.write(this, "png", File(name))
+}
