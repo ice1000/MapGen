@@ -4,6 +4,8 @@
 package org.ice1000.mapgen
 
 import java.io.PrintStream
+import java.lang.Math.max
+import java.lang.Math.min
 
 /**
  * Created by ice1000 on 17-6-6.
@@ -41,3 +43,36 @@ fun List<MutableList<Int>>.traverse(block: (Triple<Int, Int, Int>) -> Unit) =
 typealias Point = Pair<Int, Int>
 
 fun printf(s: String, vararg a: Any?): PrintStream? = System.out.printf(s, *a)
+
+/**
+ * @author ice1000
+ * Created by ice1000 on 2016/8/8.
+ *
+ */
+class Line(one: Point, two: Point) {
+
+	private val a = two.second - one.second
+	private val b = one.first - two.first
+	private val c = two.first * one.second - one.first * two.second
+	val set = HashSet<Point>()
+
+	init {
+		(min(one.first, two.first)..max(one.first, two.first)).forEach { x -> set.add(Point(x, x2y(x))) }
+		(min(one.second, two.second)..max(one.second, two.second)).forEach { y -> set.add(Point(y2x(y), y)) }
+	}
+
+	fun x2y(x: Int) = if (0 == b) c / a else -(a * x + c) / b
+	fun y2x(y: Int) = if (0 == a) c / b else -(b * y + c) / a
+
+	override operator fun equals(other: Any?): Boolean {
+		if (other == null || other !is Line) return false
+		return a / other.a == b / other.b && b / other.b == c / other.c
+	}
+
+	override fun hashCode(): Int {
+		var result = a.hashCode()
+		result = 31 * result + b.hashCode()
+		result = 31 * result + c.hashCode()
+		return result
+	}
+}
