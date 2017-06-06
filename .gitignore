@@ -1,4 +1,9 @@
+
 .idea/
 MapGen.iml
 out.png
 out/
+.gradle/
+build/
+
+*~
