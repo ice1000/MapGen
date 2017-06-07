@@ -41,7 +41,12 @@ fun main(vararg args: String) {
 		println()
 	}
 	image(50, 50) {
-		map.traverse { (x, y, i) -> color(x, y, i) }
+		map.traverse { (x, y, i) ->
+			when (i) {
+				in 0..800 -> color(x, y, BLUE)
+				in 801..1200 -> color(x, y, GREEN)
+			}
+		}
 		write("out.png")
 	}
 }

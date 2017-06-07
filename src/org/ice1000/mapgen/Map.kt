@@ -35,7 +35,8 @@ class GameMap(val map: List<MutableList<Int>>) {
 	val forEach = map::forEach
 }
 
-fun gameMapOf(width: Int, height: Int) = GameMap((0..width - 1).map { (0..height - 1).map { 0 }.toMutableList() })
+fun gameMapOf(width: Int, height: Int) =
+		GameMap((0..width - 1).map { (0..height - 1).map { rand(300) }.toMutableList() })
 
 fun List<MutableList<Int>>.traverse(block: (Triple<Int, Int, Int>) -> Unit) =
 		forEachIndexed { x, ls -> ls.forEachIndexed { y, i -> block(Triple(x, y, i)) } }
