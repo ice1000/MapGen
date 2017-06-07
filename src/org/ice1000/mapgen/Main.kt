@@ -44,9 +44,13 @@ fun main(vararg args: String) {
 		map.traverse { (x, y, i) ->
 			when (i) {
 				in 0..800 -> color(x, y, BLUE)
-				in 801..1200 -> color(x, y, GREEN)
+				in 801..1200 -> color(x, y, MIDDLE_GREEN)
+				in 1201..1500 -> color(x, y, LIGHT_GREEN)
+				in 1501..2000 -> color(x, y, BROWN)
+				else -> color(x, y, WHITE)
 			}
 		}
+		show()
 		write("out.png")
 	}
 }
