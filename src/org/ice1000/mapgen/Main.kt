@@ -48,7 +48,7 @@ fun main(vararg args: String) {
 		gameMap[rand(gameMap.width - 2) + 1, rand(gameMap.height - 2) + 1] = rand(500) + 300
 	}
 	gameMap {
-		gameMap.traverse { (x, y, i) ->
+		gameMap.traverse { (x, y, _) ->
 			gameMap[x, y] = Point(x, y).neighbors.run {
 				sumBy { (x, y) -> gameMap[x, y] } / size + rand(100)
 			}
