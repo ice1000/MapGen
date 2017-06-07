@@ -24,7 +24,7 @@ typealias Point = Pair<Int, Int>
  */
 fun main(vararg args: String) {
 	val gameMap = gameMapOf(50, 50)
-	val ls = (0..4).map { Triple(rand(gameMap.width), rand(gameMap.height), it) }
+	val ls = (0..8).map { Triple(rand(gameMap.width), rand(gameMap.height), it) }
 	ls.forEach { (x, y, i) ->
 		val v = rand(200) + 1000 + i * 200
 		gameMap {
@@ -38,16 +38,23 @@ fun main(vararg args: String) {
 	ls.forEachIndexed { i, (x1, y1, _) ->
 		ls.forEachIndexed { j, (x2, y2, _) ->
 			if (i != j) {
-				val h1 = gameMap[x1, x1]
+				val h1 = gameMap[x1, y1]
 				val h2 = gameMap[x2, y2]
+//				println("h1 = $h1, h2 = $h2")
 				gameMap {
+					val k = (h1 + h2) / 2
 					Line(Point(x1, y1), Point(x2, y2))
 							.allPoints
 //						.apply { forEach(::println) }
 							.forEach { (x, y) ->
-								gameMap[x, y] = rand(h1 + h2)
-								if (y + 1 < gameMap.height) gameMap[x, y + 1] = rand(h1 + h2)
-								if (y - 1 >= 0) gameMap[x, y - 1] = rand(h1 + h2)
+								try {
+									if (rand(100) >= 30) gameMap[x, y] = k + rand(200) - 100
+									Point(x, y).neighbors.forEach { (x, y) ->
+										if (rand(100) >= 30) gameMap[x, y] = k + rand(200) - 100
+									}
+								} catch (e: Throwable) {
+									// why
+								}
 							}
 				}
 			}
@@ -56,14 +63,15 @@ fun main(vararg args: String) {
 	(0..100).forEach {
 		gameMap[rand(gameMap.width - 2) + 1, rand(gameMap.height - 2) + 1] = rand(500) + 300
 	}
-	gameMap {
-		gameMap.traverse { (x, y, _) ->
-			gameMap[x, y] = Point(x, y).neighbors.run {
-				sumBy { (x, y) -> gameMap[x, y] } / size + rand(100)
+	(0..3).forEach {
+		gameMap {
+			gameMap.traverse { (x, y, _) ->
+				gameMap[x, y] = Point(x, y).neighbors.run {
+					sumBy { (x, y) -> gameMap[x, y] } / size //+ rand(50)
+				}
 			}
 		}
 	}
-
 //	gameMap.forEach {
 //		it.forEach { printf("%5d", it) }
 //		println()
