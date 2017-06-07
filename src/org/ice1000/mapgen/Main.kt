@@ -21,27 +21,36 @@ package org.ice1000.mapgen
  * 2000 + 雪
  */
 fun main(vararg args: String) {
-	val map = gameMapOf(50, 50)
-	(0..4).forEach {
-		val x = rand(50)
-		val y = rand(50)
-		val v = rand(200) + 1000 + it * 200
-		map {
-			Pair(x, y).neighbors.forEach { p ->
-				set(p.first, p.second, v + rand(100) - 50)
-				p.neighbors.forEach { (x, y) -> set(x, y, v + rand(100) - 50) }
+	val gameMap = gameMapOf(50, 50)
+	(0..4)
+			.map { Point(rand(gameMap.width), rand(gameMap.height)) }
+			.forEach { (x, y) ->
+				val v = rand(200) + 1000 + it * 200
+				gameMap {
+					Pair(x, y).neighbors.forEach { p ->
+						set(p.first, p.second, v + rand(100) - 50)
+						p.neighbors.forEach { (x, y) -> set(x, y, v + rand(100) - 50) }
+					}
+					set(x, y, v)
+				}
 			}
-			set(x, y, v)
+	(0..100).forEach {
+		gameMap[rand(gameMap.width - 2) + 1, rand(gameMap.height - 2) + 1] = rand(500) + 300
+	}
+	gameMap {
+		gameMap.traverse { (x, y, i) ->
+			gameMap[x, y] = Point(x, y).neighbors.run {
+				sumBy { (x, y) -> gameMap[x, y] } / size + rand(100)
+			}
 		}
 	}
-	(0..100).forEach { map[rand(48) + 1, rand(48) + 1] = rand(500) + 300 }
 
-	map.forEach {
-		it.forEach { printf("%5d", it) }
-		println()
-	}
+//	gameMap.forEach {
+//		it.forEach { printf("%5d", it) }
+//		println()
+//	}
 	image(50, 50) {
-		map.traverse { (x, y, i) ->
+		gameMap.traverse { (x, y, i) ->
 			when (i) {
 				in 0..800 -> color(x, y, BLUE)
 				in 801..1200 -> color(x, y, MIDDLE_GREEN)
@@ -50,7 +59,6 @@ fun main(vararg args: String) {
 				else -> color(x, y, WHITE)
 			}
 		}
-		show()
 		write("out.png")
 	}
 }

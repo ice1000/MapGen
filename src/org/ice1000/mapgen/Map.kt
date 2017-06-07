@@ -19,6 +19,9 @@ class GameMap(val map: List<MutableList<Int>>) {
 
 	operator fun get(x: Int, y: Int) = map[x][y]
 
+	val width = map.size
+	val height = map.first().size
+
 	infix inline operator fun <R> invoke(block: GameMap.() -> R) = block()
 
 	val Point.neighbors: List<Point>
