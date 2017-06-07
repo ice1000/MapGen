@@ -58,11 +58,11 @@ class Line(one: Point, two: Point) {
 	private val a = two.second - one.second
 	private val b = one.first - two.first
 	private val c = two.first * one.second - one.first * two.second
-	val set = HashSet<Point>()
+	val allPoints = HashSet<Point>()
 
 	init {
-		(min(one.first, two.first)..max(one.first, two.first)).forEach { x -> set.add(Point(x, x2y(x))) }
-		(min(one.second, two.second)..max(one.second, two.second)).forEach { y -> set.add(Point(y2x(y), y)) }
+		(min(one.first, two.first)..max(one.first, two.first)).forEach { x -> allPoints.add(Point(x, x2y(x))) }
+		(min(one.second, two.second)..max(one.second, two.second)).forEach { y -> allPoints.add(Point(y2x(y), y)) }
 	}
 
 	fun x2y(x: Int) = if (0 == b) c / a else -(a * x + c) / b

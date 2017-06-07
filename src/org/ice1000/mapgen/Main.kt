@@ -22,18 +22,28 @@ package org.ice1000.mapgen
  */
 fun main(vararg args: String) {
 	val gameMap = gameMapOf(50, 50)
-	(0..4)
-			.map { Point(rand(gameMap.width), rand(gameMap.height)) }
-			.forEach { (x, y) ->
-				val v = rand(200) + 1000 + it * 200
-				gameMap {
-					Pair(x, y).neighbors.forEach { p ->
-						set(p.first, p.second, v + rand(100) - 50)
-						p.neighbors.forEach { (x, y) -> set(x, y, v + rand(100) - 50) }
-					}
-					set(x, y, v)
-				}
+	val ls = (0..4).map { Triple(rand(gameMap.width), rand(gameMap.height), it) }
+	ls.forEach { (x, y, i) ->
+		val v = rand(200) + 1000 + i * 200
+		gameMap {
+			Pair(x, y).neighbors.forEach { p ->
+				set(p.first, p.second, v + rand(100) - 50)
+				p.neighbors.forEach { (x, y) -> set(x, y, v + rand(100) - 50) }
 			}
+			set(x, y, v)
+		}
+	}
+	ls.forEachIndexed { i, (x1, y1, _) ->
+		ls.forEachIndexed { j, (x2, y2, _) ->
+			val h1 = gameMap[x1, x1]
+			val h2 = gameMap[x2, y2]
+			if (i != j) {
+				Line(Point(x1, y1), Point(x2, y2))
+						.allPoints
+						.forEach { (x, y) -> gameMap[x, y] = rand((h1 + h2) shr 1) }
+			}
+		}
+	}
 	(0..100).forEach {
 		gameMap[rand(gameMap.width - 2) + 1, rand(gameMap.height - 2) + 1] = rand(500) + 300
 	}
