@@ -44,8 +44,6 @@ fun gameMapOf(width: Int, height: Int) =
 fun List<MutableList<Int>>.traverse(block: (Triple<Int, Int, Int>) -> Unit) =
 		forEachIndexed { x, ls -> ls.forEachIndexed { y, i -> block(Triple(x, y, i)) } }
 
-typealias Point = Pair<Int, Int>
-
 fun printf(s: String, vararg a: Any?): PrintStream? = System.out.printf(s, *a)
 
 /**

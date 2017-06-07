@@ -8,6 +8,8 @@
 
 package org.ice1000.mapgen
 
+typealias Point = Pair<Int, Int>
+
 /**
  * document
  *
@@ -35,12 +37,19 @@ fun main(vararg args: String) {
 	}
 	ls.forEachIndexed { i, (x1, y1, _) ->
 		ls.forEachIndexed { j, (x2, y2, _) ->
-			val h1 = gameMap[x1, x1]
-			val h2 = gameMap[x2, y2]
 			if (i != j) {
-				Line(Point(x1, y1), Point(x2, y2))
-						.allPoints
-						.forEach { (x, y) -> gameMap[x, y] = rand((h1 + h2) shr 1) }
+				val h1 = gameMap[x1, x1]
+				val h2 = gameMap[x2, y2]
+				gameMap {
+					Line(Point(x1, y1), Point(x2, y2))
+							.allPoints
+//						.apply { forEach(::println) }
+							.forEach { (x, y) ->
+								gameMap[x, y] = rand(h1 + h2)
+								if (y + 1 < gameMap.height) gameMap[x, y + 1] = rand(h1 + h2)
+								if (y - 1 >= 0) gameMap[x, y - 1] = rand(h1 + h2)
+							}
+				}
 			}
 		}
 	}
