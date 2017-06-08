@@ -40,7 +40,8 @@ inline fun image(width: Int, height: Int, block: BufferedImage.() -> Unit) {
 
 fun BufferedImage.color(p: Pair<Int, Int>, i: Int) = color(p.first, p.second, i)
 
-val BLUE = Color.BLUE.rgb
+val BLUE = 0x0000FF
+val SHALLOW_BLUE = 0x1E90FF
 val SAND = 0xEDDE78
 val MIDDLE_GREEN = 0x529D52
 val L_LIGHT_GREEN = 0x7FFF00
