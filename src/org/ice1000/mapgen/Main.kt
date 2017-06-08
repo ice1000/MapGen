@@ -40,12 +40,10 @@ fun main(vararg args: String) {
 			if (i != j && rand(50) >= 10) {
 				val h1 = map1[x1, y1]
 				val h2 = map1[x2, y2]
-//				println("h1 = $h1, h2 = $h2")
 				map1 {
 					val k = (h1 + h2) / 2
 					Line(Point(x1, y1), Point(x2, y2))
 							.allPoints
-//						.apply { forEach(::println) }
 							.forEach { (x, y) ->
 								try {
 									if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100
@@ -53,7 +51,6 @@ fun main(vararg args: String) {
 										if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100
 									}
 								} catch (e: Throwable) {
-									// why
 								}
 							}
 				}
@@ -61,7 +58,7 @@ fun main(vararg args: String) {
 		}
 	}
 	(0..100).forEach {
-		map1[rand(map1.width - 2) + 1, rand(map1.height - 2) + 1] = rand(500) + 300
+		map1[rand(map1.width - 2) + 1, rand(map1.height - 2) + 1] += rand(500) + 300
 	}
 	(0..3).forEach { map1.averagify() }
 	val map2 = map1.doublify()
@@ -78,14 +75,11 @@ fun main(vararg args: String) {
 		}
 	}
 	(0..8).forEach { map2.averagify() }
-//	map1.forEach {
-//		it.forEach { printf("%5d", it) }
-//		println()
-//	}
 	image(map2.width, map2.height) {
 		map2.traverse { (x, y, i) ->
 			color(x, y, when (i) {
-				in 0..500 -> BLUE
+				in 0..300 -> DEEP_BLUE
+				in 301..500 -> BLUE
 				in 501..800 -> SHALLOW_BLUE
 				in 801..900 -> SAND
 				in 901..1200 -> MIDDLE_GREEN
