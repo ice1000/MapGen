@@ -6,13 +6,14 @@ jdk:
 - oraclejdk8
 
 script:
-- java -jar build/libs/mapgen-v0.0.1.jar out-01.png
-- java -jar build/libs/mapgen-v0.0.1.jar out-02.png
-- java -jar build/libs/mapgen-v0.0.1.jar out-03.png
-- java -jar build/libs/mapgen-v0.0.1.jar out-04.png
-- java -jar build/libs/mapgen-v0.0.1.jar out-05.png
-- java -jar build/libs/mapgen-v0.0.1.jar out-06.png
-- java -jar build/libs/mapgen-v0.0.1.jar out-07.png
+- ./gradlew build
+- java -jar ./build/libs/mapgen-v0.0.1.jar out-01.png
+- java -jar ./build/libs/mapgen-v0.0.1.jar out-02.png
+- java -jar ./build/libs/mapgen-v0.0.1.jar out-03.png
+- java -jar ./build/libs/mapgen-v0.0.1.jar out-04.png
+- java -jar ./build/libs/mapgen-v0.0.1.jar out-05.png
+- java -jar ./build/libs/mapgen-v0.0.1.jar out-06.png
+- java -jar ./build/libs/mapgen-v0.0.1.jar out-07.png
 
 install:
 - "./gradlew check"
