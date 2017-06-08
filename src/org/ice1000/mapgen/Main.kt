@@ -83,21 +83,20 @@ fun main(vararg args: String) {
 //		println()
 //	}
 	image(map2.width, map2.height) {
-		map2
-				.map { (x, y, _) -> Pair(x, y).neighborsAndMe.run { sumBy { (x, y) -> map2[x, y] } / size } }
-				.traverse { (x, y, i) ->
-					color(x, y, when (i) {
-						in 0..800 -> BLUE
-						in 801..900 -> SAND
-						in 901..1200 -> MIDDLE_GREEN
-						in 1201..1400 -> L_LIGHT_GREEN
-						in 1401..1600 -> LIGHT_GREEN
-						in 1601..1700 -> DARK_GREEN
-						in 1701..1900 -> M_DARK_GREEN
-						in 1901..2050 -> BROWN
-						else -> WHITE
-					})
-				}
+		map2.traverse { (x, y, i) ->
+			color(x, y, when (i) {
+				in 0..500 -> BLUE
+				in 501..800 -> SHALLOW_BLUE
+				in 801..900 -> SAND
+				in 901..1200 -> MIDDLE_GREEN
+				in 1201..1400 -> L_LIGHT_GREEN
+				in 1401..1600 -> LIGHT_GREEN
+				in 1601..1700 -> DARK_GREEN
+				in 1701..1900 -> M_DARK_GREEN
+				in 1901..2050 -> BROWN
+				else -> WHITE
+			})
+		}
 		write(args.first())
 	}
 }

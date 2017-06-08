@@ -47,11 +47,7 @@ class GameMap(private var map: List<MutableList<Int>>) {
 			map.mapIndexed { i, o -> o.mapIndexed { j, q -> block(Triple(i, j, q)) }.toMutableList() }
 
 	fun averagify() = this {
-		traverse { (x, y, _) ->
-			this[x, y] = Point(x, y).neighbors.run {
-				sumBy { (x, y) -> this@GameMap[x, y] } / size
-			}
-		}
+		map = map { (x, y, _) -> Pair(x, y).neighborsAndMe.run { sumBy { (x, y) -> this@map[x, y] } / size } }
 	}
 
 	fun doublify() = GameMap(map.map(MutableList<Int>::doublify).doublify())
