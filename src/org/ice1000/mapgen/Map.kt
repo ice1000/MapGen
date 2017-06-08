@@ -44,6 +44,8 @@ class GameMap(val map: List<MutableList<Int>>) {
 			}
 		}
 	}
+
+	fun doublify() = GameMap(map.map(MutableList<Int>::doublify).doublify())
 }
 
 fun gameMapOf(width: Int, height: Int) =
@@ -51,6 +53,11 @@ fun gameMapOf(width: Int, height: Int) =
 
 fun List<MutableList<Int>>.traverse(block: (Triple<Int, Int, Int>) -> Unit) =
 		forEachIndexed { x, ls -> ls.forEachIndexed { y, i -> block(Triple(x, y, i)) } }
+
+fun <T> List<T>.doublify() = flatMap { listOf(it, it) }
+
+@JvmName("mDoublify")
+fun <T> MutableList<T>.doublify() = flatMap { listOf(it, it) }.toMutableList()
 
 fun printf(s: String, vararg a: Any?): PrintStream? = System.out.printf(s, *a)
 

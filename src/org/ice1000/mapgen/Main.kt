@@ -64,13 +64,7 @@ fun main(vararg args: String) {
 		map1[rand(map1.width - 2) + 1, rand(map1.height - 2) + 1] = rand(500) + 300
 	}
 	(0..3).forEach { map1.averagify() }
-	val map2 = gameMapOf(map1.width shl 1 + 1, map1.height shl 1 + 1)
-	map1.traverse { (x, y, i) ->
-		map2[(x * 2), (y * 2)] = i
-		map2[(x * 2) + 1, (y * 2)] = i
-		map2[(x * 2), (y * 2) + 1] = i
-		map2[(x * 2) + 1, (y * 2) + 1] = i
-	}
+	val map2 = map1.doublify()
 	(0..3).forEach { map2.averagify() }
 //	map1.forEach {
 //		it.forEach { printf("%5d", it) }
