@@ -77,8 +77,10 @@ fun main(vararg args: String) {
 		}
 	}
 	(0..8).forEach { map2.averagify() }
-	image(map2.width, map2.height) {
-		map2.internalMap.traverse { (x, y, i) ->
+	val map3 = map2.doublify()
+	map3.averagify()
+	image(map3.width, map3.height) {
+		map3.internalMap.traverse { (x, y, i) ->
 			color(x, y, when (i) {
 				in 0..300 -> DEEP_BLUE
 				in 0..500 -> BLUE
