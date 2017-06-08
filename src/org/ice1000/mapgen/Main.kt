@@ -65,7 +65,18 @@ fun main(vararg args: String) {
 	}
 	(0..3).forEach { map1.averagify() }
 	val map2 = map1.doublify()
-	map2.traverse { (x, y, i) -> map2[x, y] = rand(100) - 50 + i }
+	map2.traverse { (x, y, i) -> map2[x, y] = rand(300) - 150 + i }
+	val ls2 = (0..8).map { Triple(rand(map2.width), rand(map2.height), it) }
+	ls2.forEach { (x, y, i) ->
+		val v = rand(200) + 1000 + i * 200
+		map2 {
+			Pair(x, y).neighbors.forEach { p ->
+				set(p.first, p.second, v + rand(100) - 50)
+				p.neighbors.forEach { (x, y) -> set(x, y, v + rand(100) - 50) }
+			}
+			set(x, y, v)
+		}
+	}
 	(0..5).forEach { map2.averagify() }
 //	map1.forEach {
 //		it.forEach { printf("%5d", it) }
@@ -73,14 +84,15 @@ fun main(vararg args: String) {
 //	}
 	image(map2.width, map2.height) {
 		map2.traverse { (x, y, i) ->
-			when (i) {
-				in 0..800 -> color(x, y, BLUE)
-				in 801..1200 -> color(x, y, MIDDLE_GREEN)
-				in 1201..1600 -> color(x, y, LIGHT_GREEN)
-				in 1601..1800 -> color(x, y, M_LIGHT_GREEN)
-				in 1801..2100 -> color(x, y, BROWN)
-				else -> color(x, y, WHITE)
-			}
+			color(x, y, when (i) {
+				in 0..800 -> BLUE
+				in 801..900 -> SAND
+				in 901..1200 -> MIDDLE_GREEN
+				in 1201..1600 -> LIGHT_GREEN
+				in 1601..1800 -> M_LIGHT_GREEN
+				in 1801..2100 -> BROWN
+				else -> WHITE
+			})
 		}
 		write("out.png")
 	}
