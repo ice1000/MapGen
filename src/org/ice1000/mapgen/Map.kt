@@ -36,6 +36,14 @@ class GameMap(val map: List<MutableList<Int>>) {
 
 	val traverse = map::traverse
 	val forEach = map::forEach
+
+	fun averagify() = this {
+		traverse { (x, y, _) ->
+			this[x, y] = Point(x, y).neighbors.run {
+				sumBy { (x, y) -> this@GameMap[x, y] } / size
+			}
+		}
+	}
 }
 
 fun gameMapOf(width: Int, height: Int) =

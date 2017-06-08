@@ -43,6 +43,7 @@ fun BufferedImage.color(p: Pair<Int, Int>, i: Int) = color(p.first, p.second, i)
 val BLUE = Color.BLUE.rgb
 val LIGHT_GREEN = 0x26D308
 val MIDDLE_GREEN = 0x529D52
+val M_LIGHT_GREEN = 0x259D17
 val BROWN = 0xBE9970
 val WHITE = Color.WHITE.rgb
 
