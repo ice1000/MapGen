@@ -12,7 +12,7 @@ import java.lang.Math.min
  * @author ice1000
  */
 
-class GameMap(val map: List<MutableList<Int>>) {
+class GameMap(private var map: List<MutableList<Int>>) {
 	operator fun set(x: Int, y: Int, v: Int) {
 		map[x][y] = v
 	}
@@ -34,8 +34,17 @@ class GameMap(val map: List<MutableList<Int>>) {
 			return ls.toList()
 		}
 
+	val Point.neighborsAndMe: List<Point>
+		get () = neighbors
+				.toMutableList()
+				.apply { add(this@neighborsAndMe) }
+				.toList()
+
 	val traverse = map::traverse
 	val forEach = map::forEach
+
+	fun map(block: GameMap.(Triple<Int, Int, Int>) -> Int) =
+			map.mapIndexed { i, o -> o.mapIndexed { j, q -> block(Triple(i, j, q)) }.toMutableList() }
 
 	fun averagify() = this {
 		traverse { (x, y, _) ->
