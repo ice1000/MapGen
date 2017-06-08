@@ -6,6 +6,15 @@ jdk:
 - oraclejdk8
 
 script:
+- java -jar build/libs/mapgen-v0.0.1.jar out-01.png
+- java -jar build/libs/mapgen-v0.0.1.jar out-02.png
+- java -jar build/libs/mapgen-v0.0.1.jar out-03.png
+- java -jar build/libs/mapgen-v0.0.1.jar out-04.png
+- java -jar build/libs/mapgen-v0.0.1.jar out-05.png
+- java -jar build/libs/mapgen-v0.0.1.jar out-06.png
+- java -jar build/libs/mapgen-v0.0.1.jar out-07.png
+
+install:
 - "./gradlew check"
 
 before_install:
@@ -20,4 +29,21 @@ cache:
   directories:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
+#
+
+deploy:
+  provider: releases
+  api_key:
+    secure: LG2RaAg2jskKvw3ARtMZYKpvdlVs/Smc/QEGVfbah2pEI8z/cKTiiWlKHHdDbed4OTQKKomjHe5eZuObwwuCZsYrgxnoSRKLj7AHiCg90NUo0iyHZ+MgXavmcHw5GJwPQiAilY6e7r+76dHSbR4ekf14GZFo8ta/DClDQsIGTtlUDCL+izYS8trpUjFD0RrN3fcFyfJAssz28xXuiqYtj/igD8tX3B5ojoNSYYpnJyt7xKbRuxqHmrHRXQDbBQWM+MsQagW+04uz/QLye/m0Jc/zQw9xnsLYf/kQ8/afR7lATsk0k0TPKFX/+fVOaVd2E8IqSoz4U3E/y6mO8WE+TPvfsM6AhVgNOZNm1AODqU4pqfXSTIPCKNImWa8uZfa+ULUCRh2ZLde03o9xVZeRDNWdvGM5xwSo9g8VLh+X/VPKNiMx+ERsUjw66PWm3Zp9F6HQfvtE6yY1PgMlttmy+vcKMlABbg6XzDjQh4hY5JO1sfCcteoBuRyrRrDqgAZGfeXtUpiYn5hhEsCKHuwwKF/t4NwU6wcgNcNiObN0lYgP2dkGOV4hDKbueMoH8WpgIo/BQP/SBFCmGnVK2IAu7Omee5DGJOMDvMdYpZ3qYyL7pGolSZn0LVFWcPYUby2pbgrhuj1hJXpWnbPeQnLaViYnC+pNcLBCvZNstVrw+Ok=
+  file:
+  - out-01.png
+  - out-02.png
+  - out-03.png
+  - out-04.png
+  - out-05.png
+  - out-06.png
+  - out-07.png
+  on:
+    repo: ice1000/map-gen
+    tags: true
 #

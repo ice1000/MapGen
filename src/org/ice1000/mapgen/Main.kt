@@ -95,6 +95,6 @@ fun main(vararg args: String) {
 				else -> WHITE
 			})
 		}
-		write("out.png")
+		write(args.first())
 	}
 }
