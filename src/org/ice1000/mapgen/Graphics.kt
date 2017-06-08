@@ -51,6 +51,8 @@ val DARK_GREEN = 0x00CD00
 val M_DARK_GREEN = 0x008B00
 val BROWN = 0xBE9970
 val WHITE = Color.WHITE.rgb
+val RED = Color.RED.rgb
+val GRAY = Color.GRAY.rgb
 
 val BufferedImage.color: BufferedImage.(Int, Int, Int) -> Unit
 	inline get() = BufferedImage::setRGB

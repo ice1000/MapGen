@@ -79,8 +79,12 @@ fun main(vararg args: String) {
 	(0..6).forEach { map2.averagify() }
 	val map3 = map2.doublify()
 	map3.averagify()
-	image(map3.width, map3.height) {
-		map3.internalMap.traverse { (x, y, i) ->
+	map3.generateImage(if (args.isNotEmpty()) args.first() else "out.png")
+}
+
+fun GameMap.generateImage(fileName: String) {
+	image(width, height) {
+		internalMap.traverse { (x, y, i) ->
 			color(x, y, when (i) {
 				in 0..300 -> DEEP_BLUE
 				in 0..500 -> BLUE
@@ -91,11 +95,10 @@ fun main(vararg args: String) {
 				in 0..1600 -> LIGHT_GREEN
 				in 0..1700 -> DARK_GREEN
 				in 0..1900 -> M_DARK_GREEN
-				in 0..2030 -> BROWN
-				else -> WHITE
+				in 0..2030 -> if (1 == rand(72)) GRAY else BROWN
+				else -> if (1 == rand(24)) GRAY else WHITE
 			})
 		}
-		if (args.isNotEmpty()) write(args.first())
-		else write("out.png")
+		write(fileName)
 	}
 }
