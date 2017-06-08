@@ -58,7 +58,9 @@ fun main(vararg args: String) {
 		}
 	}
 	(0..100).forEach {
-		map1[rand(map1.width - 2) + 1, rand(map1.height - 2) + 1] += rand(500) + 300
+		val x = rand(map1.width - 2) + 1
+		val y = rand(map1.height - 2) + 1
+		map1[x, y] = (rand(500) + 300)
 	}
 	(0..3).forEach { map1.averagify() }
 	val map2 = map1.doublify()
@@ -79,15 +81,15 @@ fun main(vararg args: String) {
 		map2.traverse { (x, y, i) ->
 			color(x, y, when (i) {
 				in 0..300 -> DEEP_BLUE
-				in 301..500 -> BLUE
-				in 501..800 -> SHALLOW_BLUE
-				in 801..900 -> SAND
-				in 901..1200 -> MIDDLE_GREEN
-				in 1201..1400 -> L_LIGHT_GREEN
-				in 1401..1600 -> LIGHT_GREEN
-				in 1601..1700 -> DARK_GREEN
-				in 1701..1900 -> M_DARK_GREEN
-				in 1901..2050 -> BROWN
+				in 0..500 -> BLUE
+				in 0..800 -> SHALLOW_BLUE
+				in 0..900 -> SAND
+				in 0..1200 -> MIDDLE_GREEN
+				in 0..1400 -> L_LIGHT_GREEN
+				in 0..1600 -> LIGHT_GREEN
+				in 0..1700 -> DARK_GREEN
+				in 0..1900 -> M_DARK_GREEN
+				in 0..2050 -> BROWN
 				else -> WHITE
 			})
 		}
