@@ -10,3 +10,6 @@ generate a game map
 ![](./collections/02.png)
 ![](./collections/03.png)
 ![](./collections/04.png)
+![](./collections/05.png)
+![](./collections/06.png)
+![](./collections/07.png)

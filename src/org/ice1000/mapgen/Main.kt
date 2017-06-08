@@ -24,7 +24,7 @@ typealias Point = Pair<Int, Int>
  */
 fun main(vararg args: String) {
 	val map1 = gameMapOf(60, 60)
-	val ls = (0..8).map { Triple(rand(map1.width), rand(map1.height), it) }
+	val ls = (0..9).map { Triple(rand(map1.width), rand(map1.height), it) }
 	ls.forEach { (x, y, i) ->
 		val v = rand(200) + 1000 + i * 200
 		map1 {
@@ -76,7 +76,7 @@ fun main(vararg args: String) {
 			set(x, y, v)
 		}
 	}
-	(0..8).forEach { map2.averagify() }
+	(0..6).forEach { map2.averagify() }
 	val map3 = map2.doublify()
 	map3.averagify()
 	image(map3.width, map3.height) {
@@ -91,7 +91,7 @@ fun main(vararg args: String) {
 				in 0..1600 -> LIGHT_GREEN
 				in 0..1700 -> DARK_GREEN
 				in 0..1900 -> M_DARK_GREEN
-				in 0..2050 -> BROWN
+				in 0..2030 -> BROWN
 				else -> WHITE
 			})
 		}
