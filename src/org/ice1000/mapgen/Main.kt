@@ -78,7 +78,7 @@ fun main(vararg args: String) {
 	}
 	(0..8).forEach { map2.averagify() }
 	image(map2.width, map2.height) {
-		map2.traverse { (x, y, i) ->
+		map2.internalMap.traverse { (x, y, i) ->
 			color(x, y, when (i) {
 				in 0..300 -> DEEP_BLUE
 				in 0..500 -> BLUE
@@ -93,6 +93,7 @@ fun main(vararg args: String) {
 				else -> WHITE
 			})
 		}
-		write(args.first())
+		if (args.isNotEmpty()) write(args.first())
+		else write("out.png")
 	}
 }

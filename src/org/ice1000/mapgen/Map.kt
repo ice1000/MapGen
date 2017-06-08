@@ -21,6 +21,8 @@ class GameMap(private var map: List<MutableList<Int>>) {
 
 	val width = map.size
 	val height = map.first().size
+	val internalMap: List<MutableList<Int>>
+		get() = map
 
 	infix inline operator fun <R> invoke(block: GameMap.() -> R) = block()
 
