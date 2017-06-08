@@ -77,7 +77,7 @@ fun main(vararg args: String) {
 			set(x, y, v)
 		}
 	}
-	(0..5).forEach { map2.averagify() }
+	(0..8).forEach { map2.averagify() }
 //	map1.forEach {
 //		it.forEach { printf("%5d", it) }
 //		println()
@@ -88,7 +88,8 @@ fun main(vararg args: String) {
 				in 0..800 -> BLUE
 				in 801..900 -> SAND
 				in 901..1200 -> MIDDLE_GREEN
-				in 1201..1600 -> LIGHT_GREEN
+				in 1201..1400 -> L_LIGHT_GREEN
+				in 1401..1600 -> LIGHT_GREEN
 				in 1601..1800 -> M_LIGHT_GREEN
 				in 1801..2100 -> BROWN
 				else -> WHITE
