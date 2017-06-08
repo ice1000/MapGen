@@ -65,7 +65,8 @@ fun main(vararg args: String) {
 	}
 	(0..3).forEach { map1.averagify() }
 	val map2 = map1.doublify()
-	(0..3).forEach { map2.averagify() }
+	map2.traverse { (x, y, i) -> map2[x, y] = rand(100) - 50 + i }
+	(0..5).forEach { map2.averagify() }
 //	map1.forEach {
 //		it.forEach { printf("%5d", it) }
 //		println()
