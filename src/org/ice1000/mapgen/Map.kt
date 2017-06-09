@@ -53,12 +53,13 @@ class GameMap(private var map: List<MutableList<Int>>) {
 	}
 
 	fun doublify() = GameMap(map.map(MutableList<Int>::doublify).doublify())
+	fun triplify() = GameMap(map.map(MutableList<Int>::triplify).triplify())
 }
 
 fun gameMapOf(width: Int, height: Int) =
 		GameMap((0..width - 1).map { (0..height - 1).map { rand(300) }.toMutableList() })
 
-fun List<MutableList<Int>>.traverse(block: (Triple<Int, Int, Int>) -> Unit) =
+inline infix fun List<MutableList<Int>>.traverse(block: (Triple<Int, Int, Int>) -> Unit) =
 		forEachIndexed { x, ls -> ls.forEachIndexed { y, i -> block(Triple(x, y, i)) } }
 
 fun <T> List<T>.doublify() = flatMap { listOf(it, it) }
@@ -66,15 +67,19 @@ fun <T> List<T>.doublify() = flatMap { listOf(it, it) }
 @JvmName("mDoublify")
 fun <T> MutableList<T>.doublify() = flatMap { listOf(it, it) }.toMutableList()
 
+fun <T> List<T>.triplify() = flatMap { listOf(it, it, it) }
+
+@JvmName("mTriplify")
+fun <T> MutableList<T>.triplify() = flatMap { listOf(it, it, it) }.toMutableList()
+
 fun printf(s: String, vararg a: Any?): PrintStream? = System.out.printf(s, *a)
 
-fun <T, R> List<T>.eachTwo(block: (T, T) -> R) {
-	forEachIndexed { i, a ->
-		forEachIndexed { j, b ->
-			if (i != j) block(a, b)
-		}
-	}
-}
+infix inline fun <T, R> List<T>.eachTwo(block: (T, T) -> R) =
+		forEachIndexed { i, a -> forEachIndexed { j, b -> if (i != j) block(a, b) } }
+
+@JvmName("mEachTwo")
+infix inline fun <T, R> MutableList<T>.eachTwo(block: (T, T) -> R) =
+		forEachIndexed { i, a -> forEachIndexed { j, b -> if (i != j) block(a, b) } }
 
 /**
  * @author ice1000
@@ -89,8 +94,10 @@ class Line(one: Point, two: Point) {
 	val allPoints = HashSet<Point>()
 
 	init {
-		(min(one.first, two.first)..max(one.first, two.first)).forEach { x -> allPoints.add(Point(x, x2y(x))) }
-		(min(one.second, two.second)..max(one.second, two.second)).forEach { y -> allPoints.add(Point(y2x(y), y)) }
+		(min(one.first, two.first)..max(one.first, two.first))
+				.forEach { x -> allPoints.add(Point(x, x2y(x))) }
+		(min(one.second, two.second)..max(one.second, two.second))
+				.forEach { y -> allPoints.add(Point(y2x(y), y)) }
 	}
 
 	fun x2y(x: Int) = if (0 == b) c / a else -(a * x + c) / b
