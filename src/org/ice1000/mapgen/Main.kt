@@ -37,18 +37,15 @@ fun main(vararg args: String) {
 			set(x, y, v)
 		}
 	}
-	ls.eachTwo { (x1, y1, _), (x2, y2, _) ->
-		if (rand(50) >= 10) {
-			val h1 = map1[x1, y1]
-			val h2 = map1[x2, y2]
+	ls eachTwo { (x1, y1, _), (x2, y2, _) ->
+		if (rand(5) >= 1) {
 			map1 {
-				val k = (h1 + h2) / 2
+				val k = (map1[x1, y1] + map1[x2, y2]) shr 1
 				Line(Point(x1, y1), Point(x2, y2)).allPoints.forEach { (x, y) ->
 					forceRun {
-						if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100
-						Point(x, y).neighbors.forEach { (x, y) ->
-							if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100
-						}
+						if (rand(10) >= 3) map1[x, y] = k + rand(200) - 100
+						Point(x, y).neighbors
+								.forEach { (x, y) -> if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100 }
 					}
 				}
 			}
@@ -57,7 +54,7 @@ fun main(vararg args: String) {
 	(0..100).forEach {
 		val x = rand(map1.width - 2) + 1
 		val y = rand(map1.height - 2) + 1
-		map1[x, y] = (rand(500) + 300)
+		map1[x, y] = rand(500) + 300
 	}
 	(0..3).forEach { map1.averagify() }
 	val map2 = map1.doublify()
@@ -76,12 +73,12 @@ fun main(vararg args: String) {
 	(0..6).forEach { map2.averagify() }
 	val map3 = map2.doublify()
 	map3.averagify()
-	map3.generateImage(if (args.isNotEmpty()) args.first() else "out.png")
+	map3.generateImage(args.getOrElse(0, { "out.png" }))
 }
 
 fun GameMap.generateImage(fileName: String) {
 	image(width, height) {
-		internalMap.traverse { (x, y, i) ->
+		traverse { (x, y, i) ->
 			color(x, y, when (i) {
 				in 0..300 -> DEEP_BLUE
 				in 0..500 -> BLUE
