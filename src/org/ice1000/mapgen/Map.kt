@@ -81,6 +81,11 @@ infix inline fun <T, R> List<T>.eachTwo(block: (T, T) -> R) =
 infix inline fun <T, R> MutableList<T>.eachTwo(block: (T, T) -> R) =
 		forEachIndexed { i, a -> forEachIndexed { j, b -> if (i != j) block(a, b) } }
 
+inline fun forceRun(block: () -> Unit) = try {
+	block()
+} catch (e: Throwable) {
+}
+
 /**
  * @author ice1000
  * Created by ice1000 on 2016/8/8.
