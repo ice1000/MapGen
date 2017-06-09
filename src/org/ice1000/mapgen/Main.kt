@@ -68,10 +68,10 @@ fun main(vararg args: String) {
 		var pt: Pair<Int, Int>
 		do {
 			pt = randPt(map3.width, map3.height)
-		} while (map3[pt] !in 901..1999)
+		} while (map3[pt] !in 1201..1999)
 		map3 {
 			val river = mutableListOf<Pair<Int, Int>>()
-			while (map3[pt] in 601..1999) {
+			while (map3[pt] in 781..1999) {
 				val min = pt.neighbors8.minBy { map3[it] }
 				if (null != min && map3[min] < map3[pt]) {
 					pt = min
