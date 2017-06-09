@@ -14,3 +14,4 @@ generate a game map
 ![](./collections/06.png)
 ![](./collections/07.png)
 ![](./collections/08.png)
+![](./collections/09.png)

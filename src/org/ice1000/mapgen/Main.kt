@@ -64,12 +64,22 @@ fun main(vararg args: String) {
 	(0..6).forEach { map2.averagify() }
 	val map3 = map2.doublify()
 	map3.averagify()
-	(0..5).forEach {
+	(0..10).forEach {
 		var pt: Pair<Int, Int>
 		do {
 			pt = randPt(map3.width, map3.height)
-		} while (map3[pt] in 901..1999)
-		// TODO A Star
+		} while (map3[pt] !in 901..1999)
+		map3 {
+			val river = mutableListOf<Pair<Int, Int>>()
+			while (map3[pt] in 601..1999) {
+				val min = pt.neighbors.minBy { map3[it] }
+				if (null != min && map3[min] < map3[pt]) {
+					pt = min
+					river.add(min)
+				} else return@map3
+			}
+			river.forEach { pt -> map3[pt] = 600 }
+		}
 	}
 	map3.generateImage(args.getOrElse(0, { "out.png" }))
 }
