@@ -15,10 +15,11 @@ import java.lang.Math.min
 class GameMap(private var map: List<MutableList<Int>>) {
 	operator fun set(p: Pair<Int, Int>, v: Int) = set(p.first, p.second, v)
 	operator fun set(x: Int, y: Int, v: Int) {
-		map[x][y] = v
+		if (x >= 0 && y >= 0) map[x][y] = v
 	}
 
 	operator fun get(x: Int, y: Int) = map[x][y]
+	operator fun get(p: Pair<Int, Int>) = get(p.first, p.second)
 
 	val width = map.size
 	val height = map.first().size

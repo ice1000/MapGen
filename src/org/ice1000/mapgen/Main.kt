@@ -64,6 +64,13 @@ fun main(vararg args: String) {
 	(0..6).forEach { map2.averagify() }
 	val map3 = map2.doublify()
 	map3.averagify()
+	(0..5).forEach {
+		var pt: Pair<Int, Int>
+		do {
+			pt = randPt(map3.width, map3.height)
+		} while (map3[pt] in 901..1999)
+		// TODO A Star
+	}
 	map3.generateImage(args.getOrElse(0, { "out.png" }))
 }
 

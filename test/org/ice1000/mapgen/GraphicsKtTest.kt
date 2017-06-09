@@ -11,7 +11,7 @@ class GraphicsKtTest {
 	@Test
 	fun randTest() {
 		(0..100).forEach {
-			val limit = rand()
+			val limit = rand(50000) + 1
 			assertTrue(rand(limit) < limit)
 		}
 	}
