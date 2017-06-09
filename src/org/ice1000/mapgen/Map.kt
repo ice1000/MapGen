@@ -39,6 +39,22 @@ class GameMap(private var map: List<MutableList<Int>>) {
 			return ls.toList()
 		}
 
+	val Point.lNeighbors: List<Point>
+		get () {
+			val ls = mutableListOf<Point>()
+			if (0 < first) ls.add(Point(first - 1, second))
+			if (0 < second) ls.add(Point(first, second - 1))
+			if (width - 1 > second) ls.add(Point(first, second + 1))
+			return ls.toList()
+		}
+	val Point.rNeighbors: List<Point>
+		get () {
+			val ls = mutableListOf<Point>()
+			if (0 < first) ls.add(Point(first - 1, second))
+			if (0 < second) ls.add(Point(first, second - 1))
+			if (height - 1 > first) ls.add(Point(first + 1, second))
+			return ls.toList()
+		}
 	val Point.neighbors8: List<Point>
 		get () {
 			val ls = mutableListOf<Point>()
@@ -56,7 +72,6 @@ class GameMap(private var map: List<MutableList<Int>>) {
 			if (d && b) ls.add(Point(first + 1, second - 1))
 			return ls.toList()
 		}
-
 	val Point.neighborsAndMe: List<Point>
 		get () = neighbors.toMutableList().apply { add(this@neighborsAndMe) }.toList()
 

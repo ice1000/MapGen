@@ -33,9 +33,6 @@ fun main(vararg args: String) {
 			}
 			set(x, y, v)
 		}
-		/// add a valley
-		repeat(2) { map1.rivers.add(map1.genRiver(ls.last().run { Point(first, second) }).flatMap { it.neighbors8 }) }
-		map1.hardEncodeRivers(5)
 	}
 	ls eachTwo { (x1, y1, _), (x2, y2, _) ->
 		if (rand(5) >= 2) {
@@ -60,9 +57,9 @@ fun main(vararg args: String) {
 	map2.traverse { (x, y, i) -> map2[x, y] = rand(300) - 150 + i }
 	/// random points, as islands
 	val ls2 = map2.genRandPts(9)
-	ls2.forEach { (x, y, i) ->
-		val v = rand(200) + 1000 + i * (MAGIC_NUM_1 / ls2.size)
-		map2 {
+	map2 {
+		ls2.forEach { (x, y, i) ->
+			val v = rand(200) + 1000 + i * (MAGIC_NUM_1 / ls2.size)
 			Pair(x, y).neighbors.forEach { p ->
 				set(p.first, p.second, v + rand(100) - 50)
 				p.neighbors.forEach { (x, y) -> set(x, y, v + rand(100) - 50) }
@@ -76,7 +73,7 @@ fun main(vararg args: String) {
 	map3.averagify8().averagify().averagify()
 	/// now the map is ready
 	/// rivers(based on A* algorithm)
-	repeat(rand(2, 6)) { map3.rivers.add(map3.genRiver()) }
+	repeat(rand(4, 6)) { map3.rivers.add(map3.genRiver()) }
 	map3.generateImage(args.getOrElse(0, { "out.png" }))
 }
 
@@ -97,7 +94,7 @@ fun GameMap.generateImage(fileName: String) {
 				else -> if (1 == rand(24)) GRAY else WHITE
 			})
 		}
-		rivers.forEach { it.forEach { (x, y) -> color(x, y, SHALLOW_BLUE) } }
+		rivers.forEach { it.flatMap { it.neighborsAndMe }.forEach { (x, y) -> color(x, y, SHALLOW_BLUE) } }
 		write(fileName)
 	}
 }
