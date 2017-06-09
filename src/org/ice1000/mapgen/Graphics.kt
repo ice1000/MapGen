@@ -41,7 +41,7 @@ inline fun image(width: Int, height: Int, block: BufferedImage.() -> Unit) {
 	BufferedImage(width, height, BufferedImage.TYPE_INT_RGB).run(block)
 }
 
-fun BufferedImage.color(p: Pair<Int, Int>, i: Int) = color(p.first, p.second, i)
+fun BufferedImage.color(p: Point, i: Int) = color(p.first, p.second, i)
 
 val DEEP_BLUE = 0x0000FF
 val BLUE = 0x1E90FF
@@ -60,7 +60,7 @@ val GRAY = Color.GRAY.rgb
 val BufferedImage.color: BufferedImage.(Int, Int, Int) -> Unit
 	inline get() = BufferedImage::setRGB
 
-fun BufferedImage.colorOf(p: Pair<Int, Int>): Int = colorOf(p.first, p.second)
+fun BufferedImage.colorOf(p: Point): Int = colorOf(p.first, p.second)
 
 val BufferedImage.colorOf: BufferedImage.(Int, Int) -> Int
 	inline get() = BufferedImage::getRGB
