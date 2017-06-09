@@ -15,14 +15,7 @@ typealias Point = Pair<Int, Int>
 /**
  * document
  *
- * 8 个高地
- *
- * 0 Gay Rock
- * 1 - 800 海
- * 801 - 1200 平原
- * 1201 - 1500 高原
- * 1501 - 2000 山的偏高处
- * 2000 + 雪
+ * no document
  */
 fun main(vararg args: String) {
 	val map1 = gameMapOf(60, 60)
