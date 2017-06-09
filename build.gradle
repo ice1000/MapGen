@@ -27,7 +27,7 @@ sourceSets {
 
 jar {
 	manifest {
-		attributes 'Main-Class': 'org.ice1000.mapgen.DSL'
+		attributes 'Main-Class': 'org.ice1000.mapgen.MainKt'
 	}
 	from {
 		configurations

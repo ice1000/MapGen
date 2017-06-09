@@ -1,4 +1,4 @@
-@file:JvmName("DSL")
+@file:JvmName(CLASS_NAME)
 @file:JvmMultifileClass
 
 package org.ice1000.mapgen
@@ -67,6 +67,14 @@ fun <T> List<T>.doublify() = flatMap { listOf(it, it) }
 fun <T> MutableList<T>.doublify() = flatMap { listOf(it, it) }.toMutableList()
 
 fun printf(s: String, vararg a: Any?): PrintStream? = System.out.printf(s, *a)
+
+fun <T, R> List<T>.eachTwo(block: (T, T) -> R) {
+	forEachIndexed { i, a ->
+		forEachIndexed { j, b ->
+			if (i != j) block(a, b)
+		}
+	}
+}
 
 /**
  * @author ice1000

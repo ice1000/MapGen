@@ -1,4 +1,4 @@
-@file:JvmName("DSL")
+@file:JvmName(CLASS_NAME)
 @file:JvmMultifileClass
 
 package org.ice1000.mapgen

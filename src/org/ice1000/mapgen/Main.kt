@@ -3,10 +3,12 @@
  *
  * @author ice1000
  */
-@file:JvmName("DSL")
+@file:JvmName(CLASS_NAME)
 @file:JvmMultifileClass
 
 package org.ice1000.mapgen
+
+const val CLASS_NAME = "MapGen"
 
 typealias Point = Pair<Int, Int>
 
@@ -35,25 +37,23 @@ fun main(vararg args: String) {
 			set(x, y, v)
 		}
 	}
-	ls.forEachIndexed { i, (x1, y1, _) ->
-		ls.forEachIndexed { j, (x2, y2, _) ->
-			if (i != j && rand(50) >= 10) {
-				val h1 = map1[x1, y1]
-				val h2 = map1[x2, y2]
-				map1 {
-					val k = (h1 + h2) / 2
-					Line(Point(x1, y1), Point(x2, y2))
-							.allPoints
-							.forEach { (x, y) ->
-								try {
+	ls.eachTwo { (x1, y1, _), (x2, y2, _) ->
+		if (rand(50) >= 10) {
+			val h1 = map1[x1, y1]
+			val h2 = map1[x2, y2]
+			map1 {
+				val k = (h1 + h2) / 2
+				Line(Point(x1, y1), Point(x2, y2))
+						.allPoints
+						.forEach { (x, y) ->
+							try {
+								if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100
+								Point(x, y).neighbors.forEach { (x, y) ->
 									if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100
-									Point(x, y).neighbors.forEach { (x, y) ->
-										if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100
-									}
-								} catch (e: Throwable) {
 								}
+							} catch (e: Throwable) {
 							}
-				}
+						}
 			}
 		}
 	}
