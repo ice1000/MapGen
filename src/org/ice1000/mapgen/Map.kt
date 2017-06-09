@@ -26,6 +26,8 @@ class GameMap(private var map: List<MutableList<Int>>) {
 	val internalMap: List<MutableList<Int>>
 		get() = map
 
+	val rivers = mutableListOf<List<Point>>()
+
 	infix inline operator fun <R> invoke(block: GameMap.() -> R) = block()
 
 	val Point.neighbors: List<Point>
@@ -67,6 +69,7 @@ class GameMap(private var map: List<MutableList<Int>>) {
 
 	fun averagify() = this {
 		map = map { (x, y, _) -> Pair(x, y).neighborsAndMe.run { sumBy { (x, y) -> this@map[x, y] } / size } }
+		this
 	}
 
 	fun doublify() = GameMap(map.map(MutableList<Int>::doublify).doublify())
