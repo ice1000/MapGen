@@ -43,17 +43,15 @@ fun main(vararg args: String) {
 			val h2 = map1[x2, y2]
 			map1 {
 				val k = (h1 + h2) / 2
-				Line(Point(x1, y1), Point(x2, y2))
-						.allPoints
-						.forEach { (x, y) ->
-							try {
-								if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100
-								Point(x, y).neighbors.forEach { (x, y) ->
-									if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100
-								}
-							} catch (e: Throwable) {
-							}
+				Line(Point(x1, y1), Point(x2, y2)).allPoints.forEach { (x, y) ->
+					try {
+						if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100
+						Point(x, y).neighbors.forEach { (x, y) ->
+							if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100
 						}
+					} catch (e: Throwable) {
+					}
+				}
 			}
 		}
 	}
