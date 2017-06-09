@@ -23,8 +23,7 @@ class GameMap(private var map: List<MutableList<Int>>) {
 
 	val width = map.size
 	val height = map.first().size
-	val internalMap: List<MutableList<Int>>
-		get() = map
+	val internalMap get() = map
 
 	val rivers = mutableListOf<List<Point>>()
 
@@ -72,6 +71,11 @@ class GameMap(private var map: List<MutableList<Int>>) {
 		this
 	}
 
+	fun averagify8() = this {
+		map = map { (x, y, _) -> Pair(x, y).neighbors8.run { sumBy { (x, y) -> this@map[x, y] } / size } }
+		this
+	}
+
 	fun doublify() = GameMap(map.map(MutableList<Int>::doublify).doublify())
 	fun triplify() = GameMap(map.map(MutableList<Int>::triplify).triplify())
 }
@@ -112,7 +116,6 @@ inline fun forceRun(block: () -> Unit) = try {
  *
  */
 class Line(one: Point, two: Point) {
-
 	private val a = two.second - one.second
 	private val b = one.first - two.first
 	private val c = two.first * one.second - one.first * two.second
@@ -129,16 +132,4 @@ class Line(one: Point, two: Point) {
 
 	fun x2y(x: Int) = if (0 == b) c / a else -(a * x + c) / b
 	fun y2x(y: Int) = if (0 == a) c / b else -(b * y + c) / a
-
-	override operator fun equals(other: Any?): Boolean {
-		if (other == null || other !is Line) return false
-		return a / other.a == b / other.b && b / other.b == c / other.c
-	}
-
-	override fun hashCode(): Int {
-		var result = a.hashCode()
-		result = 31 * result + b.hashCode()
-		result = 31 * result + c.hashCode()
-		return result
-	}
 }
