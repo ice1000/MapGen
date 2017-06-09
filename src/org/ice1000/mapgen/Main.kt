@@ -63,7 +63,7 @@ fun main(vararg args: String) {
 	map2.averagify().averagify().averagify()
 	val map3 = map2.doublify()
 	map3.averagify()
-	repeat(4) { map3.rivers.add(generateRiver(map3)) }
+	repeat(rand(2, 6)) { map3.rivers.add(generateRiver(map3)) }
 	map3.generateImage(args.getOrElse(0, { "out.png" }))
 }
 
