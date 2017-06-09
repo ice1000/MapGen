@@ -76,6 +76,40 @@ class GameMap(private var map: List<MutableList<Int>>) {
 		this
 	}
 
+	fun hardEncodeRivers(height: Int): GameMap {
+		rivers.forEach { it.forEach { set(it, height) } }
+		rivers.clear()
+		return this
+	}
+
+	fun genRiver(): List<Point> {
+		var pt: Point
+		do {
+			pt = randPt(width, height)
+		} while (this[pt] !in 1201..1999)
+		return this.genRiver(pt)
+	}
+
+	fun genRiver(begin: Point): List<Point> {
+		val river = mutableListOf<Point>()
+		var pt = begin
+		this block@ {
+			while (this[pt] in 601..1999) {
+				val min = pt.neighbors8.minBy(this::get)
+				if (null != min && this[min] < this[pt]) {
+					pt = min
+					river.add(min)
+				} else {
+					river.addAll(pt.neighbors8)
+					return@block
+				}
+			}
+		}
+		return river
+	}
+
+	fun genRandPts(number: Int) = (0..number - 1).map { Triple(rand(width), rand(height), it) }
+
 	fun doublify() = GameMap(map.map(MutableList<Int>::doublify).doublify())
 	fun triplify() = GameMap(map.map(MutableList<Int>::triplify).triplify())
 }

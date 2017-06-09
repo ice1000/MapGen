@@ -79,6 +79,4 @@ fun BufferedImage.show() {
 	}
 }
 
-fun BufferedImage.write(name: String) {
-	ImageIO.write(this, "png", File(name))
-}
+fun BufferedImage.write(name: String) = ImageIO.write(this, "png", File(name))

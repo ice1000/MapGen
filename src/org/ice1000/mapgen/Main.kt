@@ -12,23 +12,30 @@ const val CLASS_NAME = "MapGen"
 
 typealias Point = Pair<Int, Int>
 
+const val MAGIC_NUM_1 = 1600
+
 /**
  * document
  *
  * no document
  */
 fun main(vararg args: String) {
+	/// the first map
 	val map1 = gameMapOf(60, 60)
-	val ls = (0..9).map { Triple(rand(map1.width), rand(map1.height), it) }
-	ls.forEach { (x, y, i) ->
-		val v = rand(200) + 1000 + i * 200
-		map1 {
+	val ls = map1.genRandPts(11)
+	/// initial points
+	map1 {
+		ls.forEach { (x, y, i) ->
+			val v = rand(200) + 1000 + i * (MAGIC_NUM_1 / ls.size)
 			Pair(x, y).neighbors.forEach { p ->
 				set(p.first, p.second, v + rand(100) - 50)
 				p.neighbors.forEach { (x, y) -> set(x, y, v + rand(100) - 50) }
 			}
 			set(x, y, v)
 		}
+		/// add a valley
+		repeat(2) { map1.rivers.add(map1.genRiver(ls.last().run { Point(first, second) }).flatMap { it.neighbors8 }) }
+		map1.hardEncodeRivers(5)
 	}
 	ls eachTwo { (x1, y1, _), (x2, y2, _) ->
 		if (rand(5) >= 2) {
@@ -47,11 +54,14 @@ fun main(vararg args: String) {
 		map1[x, y] = rand(500) + 300
 	}
 	repeat(3) { map1.averagify() }
+	/// expand the size, the second map
 	val map2 = map1.doublify()
+	/// traverse and add random points
 	map2.traverse { (x, y, i) -> map2[x, y] = rand(300) - 150 + i }
-	val ls2 = (0..8).map { Triple(rand(map2.width), rand(map2.height), it) }
+	/// random points, as islands
+	val ls2 = map2.genRandPts(9)
 	ls2.forEach { (x, y, i) ->
-		val v = rand(200) + 1000 + i * 200
+		val v = rand(200) + 1000 + i * (MAGIC_NUM_1 / ls2.size)
 		map2 {
 			Pair(x, y).neighbors.forEach { p ->
 				set(p.first, p.second, v + rand(100) - 50)
@@ -60,50 +70,21 @@ fun main(vararg args: String) {
 			set(x, y, v)
 		}
 	}
-	map2.averagify().averagify().averagify()
-	val map3 = map2.doublify()
-	map3.averagify()
-	repeat(rand(2, 6)) { map3.rivers.add(map3.generateRiver()) }
+	/// expand the map size, the final map
+	map2.averagify8().averagify()
+	val map3 = map2.triplify()
+	map3.averagify8().averagify().averagify()
+	/// now the map is ready
+	/// rivers(based on A* algorithm)
+	repeat(rand(2, 6)) { map3.rivers.add(map3.genRiver()) }
 	map3.generateImage(args.getOrElse(0, { "out.png" }))
-}
-
-fun GameMap.hardEncodeRivers(height: Int): GameMap {
-	rivers.forEach { it.forEach { set(it, height) } }
-	rivers.clear()
-	return this
-}
-
-fun GameMap.generateRiver(): List<Point> {
-	var pt: Point
-	do {
-		pt = randPt(width, height)
-	} while (this[pt] !in 1201..1999)
-	return this.generateRiver(pt)
-}
-
-fun GameMap.generateRiver(begin: Point): List<Point> {
-	val river = mutableListOf<Point>()
-	var pt = begin
-	this block@ {
-		while (this[pt] in 601..1999) {
-			val min = pt.neighbors8.minBy(this::get)
-			if (null != min && this[min] < this[pt]) {
-				pt = min
-				river.add(min)
-			} else {
-				river.addAll(pt.neighbors8)
-				return@block
-			}
-		}
-	}
-	return river
 }
 
 fun GameMap.generateImage(fileName: String) {
 	image(width, height) {
 		traverse { (x, y, i) ->
 			color(x, y, when (i) {
-				in 0..300 -> DEEP_BLUE
+				in -10000..300 -> DEEP_BLUE
 				in 0..500 -> BLUE
 				in 0..900 -> SHALLOW_BLUE
 //				in 0..900 -> SAND
