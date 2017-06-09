@@ -35,11 +35,9 @@ fun main(vararg args: String) {
 			map1 {
 				val k = (map1[x1, y1] + map1[x2, y2]) shr 1
 				Line(Point(x1, y1), Point(x2, y2)).allPoints.forEach { (x, y) ->
-					forceRun {
-						if (rand(10) >= 3) map1[x, y] = k + rand(200) - 100
-						Point(x, y).neighbors
-								.forEach { (x, y) -> if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100 }
-					}
+					if (rand(10) >= 3) map1[x, y] = k + rand(200) - 100
+					Point(x, y).neighbors
+							.forEach { (x, y) -> if (rand(100) >= 30) map1[x, y] = k + rand(200) - 100 }
 				}
 			}
 		}

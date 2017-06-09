@@ -16,7 +16,7 @@ class LineTest {
 
 	@org.junit.Test
 	fun getAllPoints2() {
-		(0..100).forEach {
+		(0..1000).forEach {
 			val x1 = rand(100)
 			val y1 = rand(100)
 			val x2 = rand(100)
