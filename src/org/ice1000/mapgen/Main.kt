@@ -46,7 +46,7 @@ fun main(vararg args: String) {
 		val y = rand(map1.height - 2) + 1
 		map1[x, y] = rand(500) + 300
 	}
-	repeat(4) { map1.averagify() }
+	repeat(3) { map1.averagify() }
 	val map2 = map1.doublify()
 	map2.traverse { (x, y, i) -> map2[x, y] = rand(300) - 150 + i }
 	val ls2 = (0..8).map { Triple(rand(map2.width), rand(map2.height), it) }
@@ -63,7 +63,7 @@ fun main(vararg args: String) {
 	map2.averagify().averagify().averagify()
 	val map3 = map2.doublify()
 	map3.averagify()
-	repeat(rand(2, 6)) { map3.rivers.add(generateRiver(map3)) }
+	repeat(rand(2, 6)) { map3.rivers.add(map3.generateRiver()) }
 	map3.generateImage(args.getOrElse(0, { "out.png" }))
 }
 
@@ -73,21 +73,26 @@ fun GameMap.hardEncodeRivers(height: Int): GameMap {
 	return this
 }
 
-fun generateRiver(gameMap: GameMap): List<Point> {
+fun GameMap.generateRiver(): List<Point> {
 	var pt: Point
 	do {
-		pt = randPt(gameMap.width, gameMap.height)
-	} while (gameMap[pt] !in 1201..1999)
+		pt = randPt(width, height)
+	} while (this[pt] !in 1201..1999)
+	return this.generateRiver(pt)
+}
+
+fun GameMap.generateRiver(begin: Point): List<Point> {
 	val river = mutableListOf<Point>()
-	gameMap {
-		while (gameMap[pt] in 601..1999) {
-			val min = pt.neighbors8.minBy { gameMap[it] }
-			if (null != min && gameMap[min] < gameMap[pt]) {
+	var pt = begin
+	this block@ {
+		while (this[pt] in 601..1999) {
+			val min = pt.neighbors8.minBy(this::get)
+			if (null != min && this[min] < this[pt]) {
 				pt = min
 				river.add(min)
 			} else {
 				river.addAll(pt.neighbors8)
-				return@gameMap
+				return@block
 			}
 		}
 	}
@@ -100,8 +105,8 @@ fun GameMap.generateImage(fileName: String) {
 			color(x, y, when (i) {
 				in 0..300 -> DEEP_BLUE
 				in 0..500 -> BLUE
-				in 0..800 -> SHALLOW_BLUE
-				in 0..900 -> SAND
+				in 0..900 -> SHALLOW_BLUE
+//				in 0..900 -> SAND
 				in 0..1200 -> MIDDLE_GREEN
 				in 0..1400 -> L_LIGHT_GREEN
 				in 0..1600 -> LIGHT_GREEN
