@@ -65,23 +65,27 @@ fun main(vararg args: String) {
 	val map3 = map2.doublify()
 	map3.averagify()
 	(0..10).forEach {
-		var pt: Pair<Int, Int>
-		do {
-			pt = randPt(map3.width, map3.height)
-		} while (map3[pt] !in 1201..1999)
-		map3 {
-			val river = mutableListOf<Pair<Int, Int>>()
-			while (map3[pt] in 781..1999) {
-				val min = pt.neighbors8.minBy { map3[it] }
-				if (null != min && map3[min] < map3[pt]) {
-					pt = min
-					river.add(min)
-				} else return@map3
-			}
-			river.forEach { pt -> map3[pt] = 600 }
-		}
+		generateRiver(map3).forEach { pt -> map3[pt] = 600 }
 	}
 	map3.generateImage(args.getOrElse(0, { "out.png" }))
+}
+
+fun generateRiver(gameMap: GameMap): List<Point> {
+	var pt: Point
+	do {
+		pt = randPt(gameMap.width, gameMap.height)
+	} while (gameMap[pt] !in 1201..1999)
+	val river = mutableListOf<Point>()
+	gameMap {
+		while (gameMap[pt] in 781..1999) {
+			val min = pt.neighbors8.minBy { gameMap[it] }
+			if (null != min && gameMap[min] < gameMap[pt]) {
+				pt = min
+				river.add(min)
+			} else return@gameMap
+		}
+	}
+	return river
 }
 
 fun GameMap.generateImage(fileName: String) {
