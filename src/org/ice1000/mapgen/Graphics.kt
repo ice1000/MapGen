@@ -19,14 +19,6 @@ import javax.swing.JPanel
  * @author ice1000
  */
 
-private val random = Random(System.currentTimeMillis())
-
-fun rand() = random.nextInt()
-fun rand(i: Int) = random.nextInt(i)
-fun rand(from: Int, to: Int) = rand(to - from) + from
-fun randPt(i: Int) = Pair(random.nextInt(i), random.nextInt(i))
-fun randPt(i: Int, j: Int) = Pair(random.nextInt(i), random.nextInt(j))
-
 fun fileImage(name: String) = ImageIO.read(File(name))!!
 
 fun urlImage(name: String) = ImageIO.read(URL(name))!!

@@ -27,9 +27,9 @@ fun main(vararg args: String) {
 	map1 {
 		ls.forEach { (x, y, i) ->
 			val v = rand(200) + 1000 + i * (MAGIC_NUM_1 / ls.size)
-			Pair(x, y).neighbors.forEach { p ->
+			Pair(x, y).pnd.forEach { p ->
 				set(p.first, p.second, v + rand(100) - 50)
-				p.neighbors.forEach { (x, y) -> set(x, y, v + rand(100) - 50) }
+				p.pnd.forEach { (x, y) -> set(x, y, v + rand(100) - 50) }
 			}
 			set(x, y, v)
 		}
@@ -39,8 +39,8 @@ fun main(vararg args: String) {
 			map1 {
 				val k = (map1[x1, y1] + map1[x2, y2]) shr 1
 				Line(Point(x1, y1), Point(x2, y2)).allPoints.forEach { (x, y) ->
-					if (rand(10) >= 3) map1[x, y] = k + rand(200) - 100
-					Point(x, y).neighbors.forEach { if (rand(100) >= 30) map1[it] = k + rand(200) - 100 }
+					70 % { map1[x, y] = k + rand(200) - 100 }
+					Point(x, y).pnd.forEach { 70 % { map1[it] = k + rand(200) - 100 } }
 				}
 			}
 		}
@@ -60,9 +60,9 @@ fun main(vararg args: String) {
 	map2 {
 		ls2.forEach { (x, y, i) ->
 			val v = rand(200) + 1000 + i * (MAGIC_NUM_1 / ls2.size)
-			Pair(x, y).neighbors.forEach { p ->
+			Pair(x, y).pnd.forEach { p ->
 				set(p.first, p.second, v + rand(100) - 50)
-				p.neighbors.forEach { (x, y) -> set(x, y, v + rand(100) - 50) }
+				p.pnd.forEach { (x, y) -> set(x, y, v + rand(100) - 50) }
 			}
 			set(x, y, v)
 		}
@@ -74,6 +74,7 @@ fun main(vararg args: String) {
 	/// now the map is ready
 	/// rivers(based on A* algorithm)
 	repeat(rand(4, 6)) { map3.rivers.add(map3.genRiver()) }
+	val begin = rand(map3.width)
 	map3.generateImage(args.getOrElse(0, { "out.png" }))
 }
 
@@ -94,7 +95,7 @@ fun GameMap.generateImage(fileName: String) {
 				else -> if (1 == rand(24)) GRAY else WHITE
 			})
 		}
-		rivers.forEach { it.flatMap { it.neighborsAndMe }.forEach { (x, y) -> color(x, y, SHALLOW_BLUE) } }
+		rivers.forEach { it.flatMap { it.pnd5 }.forEach { (x, y) -> color(x, y, SHALLOW_BLUE) } }
 		write(fileName)
 	}
 }

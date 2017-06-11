@@ -26,54 +26,55 @@ class GameMap(private var map: List<MutableList<Int>>) {
 	val internalMap get() = map
 
 	val rivers = mutableListOf<List<Point>>()
+	val coast = listOf<Point>()
 
 	infix inline operator fun <R> invoke(block: GameMap.() -> R) = block()
 
-	val Point.neighbors: List<Point>
-		get () {
-			val ls = mutableListOf<Point>()
-			if (0 < first) ls.add(Point(first - 1, second))
-			if (0 < second) ls.add(Point(first, second - 1))
-			if (width - 1 > second) ls.add(Point(first, second + 1))
-			if (height - 1 > first) ls.add(Point(first + 1, second))
-			return ls.toList()
-		}
+	/** points next door ♂ */
+	val Point.pnd: List<Point> get () {
+		val ls = mutableListOf<Point>()
+		if (0 < first) ls.add(Point(first - 1, second))
+		if (0 < second) ls.add(Point(first, second - 1))
+		if (width - 1 > second) ls.add(Point(first, second + 1))
+		if (height - 1 > first) ls.add(Point(first + 1, second))
+		return ls.toList()
+	}
 
-	val Point.lNeighbors: List<Point>
-		get () {
-			val ls = mutableListOf<Point>()
-			if (0 < first) ls.add(Point(first - 1, second))
-			if (0 < second) ls.add(Point(first, second - 1))
-			if (width - 1 > second) ls.add(Point(first, second + 1))
-			return ls.toList()
-		}
-	val Point.rNeighbors: List<Point>
-		get () {
-			val ls = mutableListOf<Point>()
-			if (0 < first) ls.add(Point(first - 1, second))
-			if (0 < second) ls.add(Point(first, second - 1))
-			if (height - 1 > first) ls.add(Point(first + 1, second))
-			return ls.toList()
-		}
-	val Point.neighbors8: List<Point>
-		get () {
-			val ls = mutableListOf<Point>()
-			val a = 0 < first
-			val b = 0 < second
-			if (a) ls.add(Point(first - 1, second))
-			if (b) ls.add(Point(first, second - 1))
-			if (a && b) ls.add(Point(first - 1, second - 1))
-			val c = width - 1 > second
-			val d = height - 1 > first
-			if (c) ls.add(Point(first, second + 1))
-			if (d) ls.add(Point(first + 1, second))
-			if (c && d) ls.add(Point(first + 1, second + 1))
-			if (a && c) ls.add(Point(first - 1, second + 1))
-			if (d && b) ls.add(Point(first + 1, second - 1))
-			return ls.toList()
-		}
-	val Point.neighborsAndMe: List<Point>
-		get () = neighbors.toMutableList().apply { add(this@neighborsAndMe) }.toList()
+	/** points next door left ♂ */
+	val Point.pndL: List<Point> get () {
+		val ls = mutableListOf<Point>()
+		if (0 < first) ls.add(Point(first - 1, second))
+		if (0 < second) ls.add(Point(first, second - 1))
+		if (width - 1 > second) ls.add(Point(first, second + 1))
+		return ls.toList()
+	}
+	/** points next door right ♂ */
+	val Point.pndR: List<Point> get () {
+		val ls = mutableListOf<Point>()
+		if (0 < first) ls.add(Point(first - 1, second))
+		if (0 < second) ls.add(Point(first, second - 1))
+		if (height - 1 > first) ls.add(Point(first + 1, second))
+		return ls.toList()
+	}
+	/** 8 points next door ♂ */
+	val Point.pnd8: List<Point> get () {
+		val ls = mutableListOf<Point>()
+		val a = 0 < first
+		val b = 0 < second
+		if (a) ls.add(Point(first - 1, second))
+		if (b) ls.add(Point(first, second - 1))
+		if (a && b) ls.add(Point(first - 1, second - 1))
+		val c = width - 1 > second
+		val d = height - 1 > first
+		if (c) ls.add(Point(first, second + 1))
+		if (d) ls.add(Point(first + 1, second))
+		if (c && d) ls.add(Point(first + 1, second + 1))
+		if (a && c) ls.add(Point(first - 1, second + 1))
+		if (d && b) ls.add(Point(first + 1, second - 1))
+		return ls.toList()
+	}
+	/** points next door and self ♂ */
+	val Point.pnd5: List<Point> get () = pnd.toMutableList().apply { add(this@pnd5) }.toList()
 
 	val traverse get() = map::traverse
 	val forEach get() = map::forEach
@@ -82,12 +83,12 @@ class GameMap(private var map: List<MutableList<Int>>) {
 			map.mapIndexed { i, o -> o.mapIndexed { j, q -> block(Triple(i, j, q)) }.toMutableList() }
 
 	fun averagify() = this {
-		map = map { (x, y, _) -> Pair(x, y).neighborsAndMe.run { sumBy { (x, y) -> this@map[x, y] } / size } }
+		map = map { (x, y, _) -> Pair(x, y).pnd5.run { sumBy { (x, y) -> this@map[x, y] } / size } }
 		this
 	}
 
 	fun averagify8() = this {
-		map = map { (x, y, _) -> Pair(x, y).neighbors8.run { sumBy { (x, y) -> this@map[x, y] } / size } }
+		map = map { (x, y, _) -> Pair(x, y).pnd8.run { sumBy { (x, y) -> this@map[x, y] } / size } }
 		this
 	}
 
@@ -110,12 +111,12 @@ class GameMap(private var map: List<MutableList<Int>>) {
 		var pt = begin
 		this block@ {
 			while (this[pt] in 601..1999) {
-				val min = pt.neighbors8.minBy(this::get)
+				val min = pt.pnd8.minBy(this::get)
 				if (null != min && this[min] < this[pt]) {
 					pt = min
 					river.add(min)
 				} else {
-					river.addAll(pt.neighbors8)
+					river.addAll(pt.pnd8)
 					return@block
 				}
 			}
