@@ -74,7 +74,12 @@ fun main(vararg args: String) {
 	/// now the map is ready
 	/// rivers(based on A* algorithm)
 	repeat(rand(4, 6)) { map3.rivers.add(map3.genRiver()) }
-	val begin = rand(map3.width)
+	map3 {
+		val u = rand(map3.width)
+		val d = rand(map3.width)
+		val l = rand(map3.height)
+		val r = rand(map3.height)
+	}
 	map3.generateImage(args.getOrElse(0, { "out.png" }))
 }
 
