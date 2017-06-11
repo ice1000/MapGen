@@ -8,7 +8,6 @@ import java.awt.Graphics
 import java.awt.image.BufferedImage
 import java.io.File
 import java.net.URL
-import java.util.*
 import javax.imageio.ImageIO
 import javax.swing.JFrame
 import javax.swing.JPanel
