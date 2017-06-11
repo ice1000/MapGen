@@ -98,9 +98,6 @@ fun main(vararg args: String) {
 		bfs(Point(i, j), { it.pndL })
 		bfs(Point(i, j), { it.pndR })
 	}
-	repeat(20) {
-
-	}
 	map3.generateImage(args.getOrElse(0, { "out.png" }))
 }
 
@@ -123,6 +120,9 @@ fun GameMap.generateImage(fileName: String) {
 		}
 		coast.forEach { (x, y) -> color(x, y, SAND) }
 		rivers.forEach { it.flatMap { it.pnd5 }.forEach { (x, y) -> color(x, y, SHALLOW_BLUE) } }
+		repeat(20) {
+			genRandPtSatisfying { get(it) in 1151..1450 }.pnd5.forEach { (x, y) -> color(x, y, ORANGE) }
+		}
 		write(fileName)
 	}
 }

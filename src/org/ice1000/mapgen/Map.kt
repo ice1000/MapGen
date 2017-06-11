@@ -104,12 +104,12 @@ class GameMap(private var map: List<MutableList<Int>>) {
 		var pt: Point
 		do {
 			pt = randPt(width, height)
-		} while (block(pt))
+		} while (!block(pt))
 		return pt
 	}
 
 	fun genRiver()
-			= this.genRiver(genRandPtSatisfying { this[it] !in 1201..1999 })
+			= this.genRiver(genRandPtSatisfying { this[it] in 1201..1999 })
 
 	fun genRiver(begin: Point): List<Point> {
 		val river = mutableListOf<Point>()
