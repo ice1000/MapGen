@@ -119,10 +119,11 @@ fun GameMap.generateImage(fileName: String) {
 			})
 		}
 		coast.forEach { (x, y) -> color(x, y, SAND) }
-		rivers.forEach { it.flatMap { it.pnd5 }.forEach { (x, y) -> color(x, y, SHALLOW_BLUE) } }
-		repeat(20) {
-			genRandPtSatisfying { get(it) in 1151..1450 }.pnd5.forEach { (x, y) -> color(x, y, ORANGE) }
+		repeat(6) {
+			genRandPtSatisfying { get(it) in 1151..1450 }.pnd9
+					.forEach { (x, y) -> color(x, y, ORANGE) }
 		}
+		rivers.forEach { it.flatMap { it.pnd5 }.forEach { (x, y) -> color(x, y, SHALLOW_BLUE) } }
 		write(fileName)
 	}
 }

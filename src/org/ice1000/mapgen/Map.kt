@@ -77,6 +77,8 @@ class GameMap(private var map: List<MutableList<Int>>) {
 	}
 	/** points next door and self ♂ */
 	val Point.pnd5: MutableList<Point> get () = pnd.apply { add(this@pnd5) }
+	/** points next door 8 and self ♂ */
+	val Point.pnd9: MutableList<Point> get () = pnd8.apply { add(this@pnd9) }
 
 	val traverse get() = map::traverse
 	val forEach get() = map::forEach
