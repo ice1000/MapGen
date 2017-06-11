@@ -8,6 +8,8 @@
 
 package org.ice1000.mapgen
 
+import java.util.*
+
 const val CLASS_NAME = "MapGen"
 
 typealias Point = Pair<Int, Int>
@@ -75,10 +77,19 @@ fun main(vararg args: String) {
 	/// rivers(based on A* algorithm)
 	repeat(rand(4, 6)) { map3.rivers.add(map3.genRiver()) }
 	map3 {
-		val u = rand(map3.width)
-		val d = rand(map3.width)
-		val l = rand(map3.height)
-		val r = rand(map3.height)
+		val u = rand(10, map3.width - 10)
+//		val d = rand(map3.width)
+//		val l = rand(map3.height)
+//		val r = rand(map3.height)
+		var i = 0
+		while (i < map3.height && map3[u, i] <= 900) ++i
+		val q = ArrayDeque<Point>(100)
+		q.add(Point(u, i).apply(::println))
+		while (q.isNotEmpty()) {
+			if (map3[q.peek()] in 801..900) map3.coast.add(q.peek())
+			q.peek().pndL.filter { it !in q && map3[it] in 801..900 }.forEach(q::push)
+			q.pop()
+		}
 	}
 	map3.generateImage(args.getOrElse(0, { "out.png" }))
 }

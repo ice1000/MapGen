@@ -26,38 +26,38 @@ class GameMap(private var map: List<MutableList<Int>>) {
 	val internalMap get() = map
 
 	val rivers = mutableListOf<List<Point>>()
-	val coast = listOf<Point>()
+	val coast = mutableListOf<Point>()
 
 	infix inline operator fun <R> invoke(block: GameMap.() -> R) = block()
 
 	/** points next door ♂ */
-	val Point.pnd: List<Point> get () {
+	val Point.pnd: MutableList<Point> get () {
 		val ls = mutableListOf<Point>()
 		if (0 < first) ls.add(Point(first - 1, second))
 		if (0 < second) ls.add(Point(first, second - 1))
 		if (width - 1 > second) ls.add(Point(first, second + 1))
 		if (height - 1 > first) ls.add(Point(first + 1, second))
-		return ls.toList()
+		return ls
 	}
 
 	/** points next door left ♂ */
-	val Point.pndL: List<Point> get () {
+	val Point.pndL: MutableList<Point> get () {
 		val ls = mutableListOf<Point>()
 		if (0 < first) ls.add(Point(first - 1, second))
 		if (0 < second) ls.add(Point(first, second - 1))
 		if (width - 1 > second) ls.add(Point(first, second + 1))
-		return ls.toList()
+		return ls
 	}
 	/** points next door right ♂ */
-	val Point.pndR: List<Point> get () {
+	val Point.pndR: MutableList<Point> get () {
 		val ls = mutableListOf<Point>()
 		if (0 < first) ls.add(Point(first - 1, second))
 		if (0 < second) ls.add(Point(first, second - 1))
 		if (height - 1 > first) ls.add(Point(first + 1, second))
-		return ls.toList()
+		return ls
 	}
 	/** 8 points next door ♂ */
-	val Point.pnd8: List<Point> get () {
+	val Point.pnd8: MutableList<Point> get () {
 		val ls = mutableListOf<Point>()
 		val a = 0 < first
 		val b = 0 < second
@@ -71,10 +71,10 @@ class GameMap(private var map: List<MutableList<Int>>) {
 		if (c && d) ls.add(Point(first + 1, second + 1))
 		if (a && c) ls.add(Point(first - 1, second + 1))
 		if (d && b) ls.add(Point(first + 1, second - 1))
-		return ls.toList()
+		return ls
 	}
 	/** points next door and self ♂ */
-	val Point.pnd5: List<Point> get () = pnd.toMutableList().apply { add(this@pnd5) }.toList()
+	val Point.pnd5: MutableList<Point> get () = pnd.apply { add(this@pnd5) }
 
 	val traverse get() = map::traverse
 	val forEach get() = map::forEach
