@@ -98,6 +98,9 @@ fun main(vararg args: String) {
 		bfs(Point(i, j), { it.pndL })
 		bfs(Point(i, j), { it.pndR })
 	}
+	repeat(20) {
+
+	}
 	map3.generateImage(args.getOrElse(0, { "out.png" }))
 }
 
