@@ -21,12 +21,14 @@ class GameMap(private var map: List<MutableList<Int>>) {
 	operator fun get(x: Int, y: Int) = map[x][y]
 	operator fun get(p: Pair<Int, Int>) = get(p.first, p.second)
 
-	val width = map.size
-	val height = map.first().size
+	operator fun contains(p: Pair<Int, Int>) = p.first in 0..width - 1 && p.second in 0..height - 1
+
+	val width get() = map.size
+	val height get() = map.first().size
 	val internalMap get() = map
 
 	val rivers = mutableListOf<List<Point>>()
-	val coast = mutableListOf<Point>()
+	val coast = ArrayList<Point>(80000)
 
 	infix inline operator fun <R> invoke(block: GameMap.() -> R) = block()
 

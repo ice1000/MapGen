@@ -77,19 +77,26 @@ fun main(vararg args: String) {
 	/// rivers(based on A* algorithm)
 	repeat(rand(4, 6)) { map3.rivers.add(map3.genRiver()) }
 	map3 {
-		val u = rand(10, map3.width - 10)
-//		val d = rand(map3.width)
-//		val l = rand(map3.height)
-//		val r = rand(map3.height)
-		var i = 0
-		while (i < map3.height && map3[u, i] <= 900) ++i
-		val q = ArrayDeque<Point>(100)
-		q.add(Point(u, i).apply(::println))
-		while (q.isNotEmpty()) {
-			if (map3[q.peek()] in 801..900) map3.coast.add(q.peek())
-			q.peek().pndL.filter { it !in q && map3[it] in 801..900 }.forEach(q::push)
-			q.pop()
+		val rg = 801..960
+		fun bfs(p: Point, block: (Point) -> List<Point>) {
+			val q: Queue<Point> = LinkedList<Point>()
+			q.offer(p)
+			while (q.isNotEmpty() && map3.coast.size <= 80000) {
+				if (q.peek() in map3 && map3[q.peek()] in rg) {
+					block(q.peek()).filter { it !in q && map3[it] in rg }.forEach {
+						q.offer(it)
+						map3.coast.add(it)
+					}
+				}
+				q.poll()
+			}
 		}
+
+		val i = rand(10, map3.width - 10)
+		var j = 0
+		while (j < map3.height && map3[i, j] !in rg) ++j
+		bfs(Point(i, j), { it.pndL })
+		bfs(Point(i, j), { it.pndR })
 	}
 	map3.generateImage(args.getOrElse(0, { "out.png" }))
 }
@@ -111,6 +118,7 @@ fun GameMap.generateImage(fileName: String) {
 				else -> if (1 == rand(24)) GRAY else WHITE
 			})
 		}
+		coast.forEach { (x, y) -> color(x, y, SAND) }
 		rivers.forEach { it.flatMap { it.pnd5 }.forEach { (x, y) -> color(x, y, SHALLOW_BLUE) } }
 		write(fileName)
 	}
