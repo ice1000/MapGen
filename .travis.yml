@@ -7,13 +7,13 @@ jdk:
 
 script:
 - ./gradlew build
-- java -jar ./build/libs/mapgen-v0.0.1.jar out-01.png
-- java -jar ./build/libs/mapgen-v0.0.1.jar out-02.png
-- java -jar ./build/libs/mapgen-v0.0.1.jar out-03.png
-- java -jar ./build/libs/mapgen-v0.0.1.jar out-04.png
-- java -jar ./build/libs/mapgen-v0.0.1.jar out-05.png
-- java -jar ./build/libs/mapgen-v0.0.1.jar out-06.png
-- java -jar ./build/libs/mapgen-v0.0.1.jar out-07.png
+- java -jar ./build/libs/map-gen-v0.1.jar out-01.png
+- java -jar ./build/libs/map-gen-v0.1.jar out-02.png
+- java -jar ./build/libs/map-gen-v0.1.jar out-03.png
+- java -jar ./build/libs/map-gen-v0.1.jar out-04.png
+- java -jar ./build/libs/map-gen-v0.1.jar out-05.png
+- java -jar ./build/libs/map-gen-v0.1.jar out-06.png
+- java -jar ./build/libs/map-gen-v0.1.jar out-07.png
 
 install:
 - "./gradlew check"
