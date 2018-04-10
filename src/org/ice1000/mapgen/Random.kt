@@ -16,6 +16,6 @@ fun rand(from: Int, to: Int) = rand(to - from) + from
 fun randPt(i: Int) = Pair(random.nextInt(i), random.nextInt(i))
 fun randPt(i: Int, j: Int) = Pair(random.nextInt(i), random.nextInt(j))
 
-infix inline operator fun Int.rem(block: () -> Unit) {
+inline infix operator fun Int.rem(block: () -> Unit) {
 	if (rand(100) < this) block()
 }

@@ -1,8 +1,8 @@
 group 'org.ice1000'
-version 'v0.0.1'
+version 'v0.1'
 
 buildscript {
-	ext.kotlin_version = '1.1.4'
+	ext.kotlin_version = '1.2.31'
 
 	repositories {
 		mavenCentral()
@@ -47,7 +47,7 @@ allprojects {
 }
 
 dependencies {
-	artifact "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+	artifact "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
 	configurations.compile.extendsFrom(configurations.artifact)
 

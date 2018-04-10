@@ -1,5 +1,6 @@
 @file:JvmName(CLASS_NAME)
 @file:JvmMultifileClass
+@file:Suppress("MemberVisibilityCanBePrivate")
 
 package org.ice1000.mapgen
 
@@ -21,7 +22,7 @@ class GameMap(private var map: List<MutableList<Int>>) {
 	operator fun get(x: Int, y: Int) = map[x][y]
 	operator fun get(p: Pair<Int, Int>) = get(p.first, p.second)
 
-	operator fun contains(p: Pair<Int, Int>) = p.first in 0..width - 1 && p.second in 0..height - 1
+	operator fun contains(p: Pair<Int, Int>) = p.first in 0 until width && p.second in 0 until height
 
 	val width get() = map.size
 	val height get() = map.first().size
@@ -30,7 +31,7 @@ class GameMap(private var map: List<MutableList<Int>>) {
 	val rivers = mutableListOf<List<Point>>()
 	val coast = ArrayList<Point>(80000)
 
-	infix inline operator fun <R> invoke(block: GameMap.() -> R) = block()
+	inline infix operator fun <R> invoke(block: GameMap.() -> R) = block()
 
 	/** points next door ♂ */
 	val Point.pnd: MutableList<Point> get () {
@@ -131,14 +132,14 @@ class GameMap(private var map: List<MutableList<Int>>) {
 		return river
 	}
 
-	fun genRandPts(number: Int) = (0..number - 1).map { Triple(rand(width), rand(height), it) }
+	fun genRandPts(number: Int) = (0 until number).map { Triple(rand(width), rand(height), it) }
 
 	fun doublify() = GameMap(map.map(MutableList<Int>::doublify).doublify())
 	fun triplify() = GameMap(map.map(MutableList<Int>::triplify).triplify())
 }
 
 fun gameMapOf(width: Int, height: Int) =
-		GameMap((0..width - 1).map { (0..height - 1).map { rand(300) }.toMutableList() })
+		GameMap((0 until width).map { (0 until height).map { rand(300) }.toMutableList() })
 
 inline infix fun List<MutableList<Int>>.traverse(block: (Triple<Int, Int, Int>) -> Unit) =
 		forEachIndexed { x, ls -> ls.forEachIndexed { y, i -> block(Triple(x, y, i)) } }
@@ -155,11 +156,11 @@ fun <T> MutableList<T>.triplify() = flatMap { listOf(it, it, it) }.toMutableList
 
 fun printf(s: String, vararg a: Any?): PrintStream? = System.out.printf(s, *a)
 
-infix inline fun <T, R> List<T>.eachTwo(block: (T, T) -> R) =
+inline infix fun <T, R> List<T>.eachTwo(block: (T, T) -> R) =
 		forEachIndexed { i, a -> forEachIndexed { j, b -> if (i != j) block(a, b) } }
 
 @JvmName("mEachTwo")
-infix inline fun <T, R> MutableList<T>.eachTwo(block: (T, T) -> R) =
+inline infix fun <T, R> MutableList<T>.eachTwo(block: (T, T) -> R) =
 		forEachIndexed { i, a -> forEachIndexed { j, b -> if (i != j) block(a, b) } }
 
 inline fun forceRun(block: () -> Unit) = try {
