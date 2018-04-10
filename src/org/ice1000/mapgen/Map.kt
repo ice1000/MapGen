@@ -34,48 +34,52 @@ class GameMap(private var map: List<MutableList<Int>>) {
 	inline infix operator fun <R> invoke(block: GameMap.() -> R) = block()
 
 	/** points next door ♂ */
-	val Point.pnd: MutableList<Point> get () {
-		val ls = mutableListOf<Point>()
-		if (0 < first) ls.add(Point(first - 1, second))
-		if (0 < second) ls.add(Point(first, second - 1))
-		if (width - 1 > second) ls.add(Point(first, second + 1))
-		if (height - 1 > first) ls.add(Point(first + 1, second))
-		return ls
-	}
+	val Point.pnd: MutableList<Point>
+		get () {
+			val ls = mutableListOf<Point>()
+			if (0 < first) ls.add(Point(first - 1, second))
+			if (0 < second) ls.add(Point(first, second - 1))
+			if (width - 1 > second) ls.add(Point(first, second + 1))
+			if (height - 1 > first) ls.add(Point(first + 1, second))
+			return ls
+		}
 
 	/** points next door left ♂ */
-	val Point.pndL: MutableList<Point> get () {
-		val ls = mutableListOf<Point>()
-		if (0 < first) ls.add(Point(first - 1, second))
-		if (0 < second) ls.add(Point(first, second - 1))
-		if (width - 1 > second) ls.add(Point(first, second + 1))
-		return ls
-	}
+	val Point.pndL: MutableList<Point>
+		get () {
+			val ls = mutableListOf<Point>()
+			if (0 < first) ls.add(Point(first - 1, second))
+			if (0 < second) ls.add(Point(first, second - 1))
+			if (width - 1 > second) ls.add(Point(first, second + 1))
+			return ls
+		}
 	/** points next door right ♂ */
-	val Point.pndR: MutableList<Point> get () {
-		val ls = mutableListOf<Point>()
-		if (0 < first) ls.add(Point(first - 1, second))
-		if (0 < second) ls.add(Point(first, second - 1))
-		if (height - 1 > first) ls.add(Point(first + 1, second))
-		return ls
-	}
+	val Point.pndR: MutableList<Point>
+		get () {
+			val ls = mutableListOf<Point>()
+			if (0 < first) ls.add(Point(first - 1, second))
+			if (0 < second) ls.add(Point(first, second - 1))
+			if (height - 1 > first) ls.add(Point(first + 1, second))
+			return ls
+		}
 	/** 8 points next door ♂ */
-	val Point.pnd8: MutableList<Point> get () {
-		val ls = mutableListOf<Point>()
-		val a = 0 < first
-		val b = 0 < second
-		if (a) ls.add(Point(first - 1, second))
-		if (b) ls.add(Point(first, second - 1))
-		if (a && b) ls.add(Point(first - 1, second - 1))
-		val c = width - 1 > second
-		val d = height - 1 > first
-		if (c) ls.add(Point(first, second + 1))
-		if (d) ls.add(Point(first + 1, second))
-		if (c && d) ls.add(Point(first + 1, second + 1))
-		if (a && c) ls.add(Point(first - 1, second + 1))
-		if (d && b) ls.add(Point(first + 1, second - 1))
-		return ls
-	}
+	val Point.pnd8: MutableList<Point>
+		get () {
+			val ls = mutableListOf<Point>()
+			val a = 0 < first
+			val b = 0 < second
+			if (a) ls.add(Point(first - 1, second))
+			if (b) ls.add(Point(first, second - 1))
+			if (a && b) ls.add(Point(first - 1, second - 1))
+			val c = width - 1 > second
+			val d = height - 1 > first
+			if (c) ls.add(Point(first, second + 1))
+			if (d) ls.add(Point(first + 1, second))
+			if (c && d) ls.add(Point(first + 1, second + 1))
+			if (a && c) ls.add(Point(first - 1, second + 1))
+			if (d && b) ls.add(Point(first + 1, second - 1))
+			return ls
+		}
 	/** points next door and self ♂ */
 	val Point.pnd5: MutableList<Point> get () = pnd.apply { add(this@pnd5) }
 	/** points next door 8 and self ♂ */
@@ -111,13 +115,12 @@ class GameMap(private var map: List<MutableList<Int>>) {
 		return pt
 	}
 
-	fun genRiver()
-			= this.genRiver(genRandPtSatisfying { this[it] in 1201..1999 })
+	val river get() = this.genRiver(genRandPtSatisfying { this[it] in 1201..1999 })
 
 	fun genRiver(begin: Point): List<Point> {
 		val river = mutableListOf<Point>()
 		var pt = begin
-		this block@ {
+		this block@{
 			while (this[pt] in 601..1999) {
 				val min = pt.pnd8.minBy(this::get)
 				if (null != min && this[min] < this[pt]) {

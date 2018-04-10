@@ -28,9 +28,8 @@ inline fun image(name: String, width: Int, height: Int, block: BufferedImage.() 
 	})
 }
 
-inline fun image(width: Int, height: Int, block: BufferedImage.() -> Unit) {
-	BufferedImage(width, height, BufferedImage.TYPE_INT_RGB).run(block)
-}
+inline fun image(width: Int, height: Int, block: BufferedImage.() -> Unit) =
+		BufferedImage(width, height, BufferedImage.TYPE_INT_RGB).also(block)
 
 fun BufferedImage.color(p: Point, i: Int) = color(p.first, p.second, i)
 
