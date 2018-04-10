@@ -25,6 +25,7 @@ fun main(vararg args: String) {
 	args.firstOrNull()?.let {
 		image.write(it)
 	} ?: JFrame().apply frame@{
+		title = "MapGen by ice1000"
 		layout = BorderLayout()
 		setSize(image.width, image.height + 20)
 		add(object : JComponent() {
@@ -75,7 +76,7 @@ fun run(): GameMap {
 		val y = rand(map1.height - 2) + 1
 		map1[x, y] = rand(500) + 300
 	}
-	repeat(3) { map1.averagify() }
+	map1.averagify8().averagify().averagify8()
 	/// expand the size, the second map
 	val map2 = map1.doublify()
 	/// traverse and add random points
@@ -141,9 +142,14 @@ fun GameMap.generateImage() = image(width, height) {
 		}
 	}
 
-	val i = rand(10, width - 10)
+	val offset = 10
+	val i = rand(offset, width - offset)
 	var j = 0
 	while (j < height && get(i, j) !in rg) ++j
+	bfs(Point(i, j), { it.pndL })
+	bfs(Point(i, j), { it.pndR })
+	j = height - 1
+	while (j > 0 && get(i, j) !in rg) --j
 	bfs(Point(i, j), { it.pndL })
 	bfs(Point(i, j), { it.pndR })
 	/// pumpkins
